@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Chosen Palette: "Vilela Esportiva" - Inspirada nos logos da prefeitura (azul marinho, verde-limão) e neutros (branco, cinza claro) para criar uma identidade visual moderna, tecnológica e ligada ao município. -->
+    <!-- Application Structure Plan: A estrutura foi desenhada para priorizar a usabilidade e o acesso rápido à informação, em vez de espelhar a ordem linear do regulamento. A página é dividida em seções temáticas: 1. Visão Geral (Hero) com um contador regressivo para engajamento e dados chave (datas, modalidades). 2. Modalidades com filtros interativos por categoria, o que é mais útil para técnicos e atletas. 3. Prazos e Inscrições em formato de linha do tempo visual. 4. Pontuação e Premiação, para detalhar os novos sistemas. 5. Regras Essenciais organizadas em um acordeão para evitar um bloco de texto massivo. Essa arquitetura orientada à tarefa facilita a navegação e a consulta rápida, que são os principais objetivos dos usuários deste tipo de documento. -->
+    <!-- Visualization & Content Choices: 1. (Informar) Contador Regressivo: HTML/CSS/JS para criar urgência e engajamento. 2. (Comparar) Gráfico de Modalidades por Categoria: Chart.js (Canvas) para mostrar visualmente a distribuição de esportes, facilitando a compreensão da oferta. 3. (Organizar) Filtro de Modalidades: HTML/CSS/JS para permitir que os usuários vejam apenas os esportes de seu interesse, melhorando a usabilidade. 4. (Organizar) Linha do Tempo de Prazos: HTML/CSS para apresentar datas críticas de forma mais visual e fácil de seguir. 5. (Organizar) Acordeão de Regras: HTML/CSS/JS para agrupar regras complexas em tópicos clicáveis, tornando a informação menos intimidante. 6. (Gerar Conteúdo Específico) Plano de Treinamento/Regras e Histórico por Modalidade: Chamada à API Gemini para gerar conteúdo detalhado ao clicar em uma modalidade. 7. (Orientar/Apoiar) Dicas de Treino e Alimentação: Chamada à API Gemini para gerar conselhos práticos para esportes específicos. 8. (Aprofundar) Explicar Regra em Detalhe: Chamada à API Gemini para fornecer explicações aprofundadas de regras. 9. (Detalhar Modalidade) Visualizar Detalhes da Modalidade: Ao clicar no card da modalidade, um modal exibe informações estáticas e uma descrição gerada por IA. Justificativa: todas as escolhas visam transformar um documento denso em uma ferramenta de consulta rápida e interativa, adicionando valor com IA generativa e contextualizada para os públicos-alvo. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <title>JEV'S 2025 - Regulamento Interativo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .brand-gradient {
+            background: linear-gradient(90deg, #1e3a8a, #4f46e5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 90%;
+            max-height: 90%;
+            overflow-y: auto;
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+        .modal-overlay.open .modal-content {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="text-slate-700">
+
+    <!-- Header -->
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="flex items-center space-x-2">
+                 <div class="w-8 h-8 bg-blue-800 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                    J
+                 </div>
+                 <span class="text-xl font-bold text-slate-800">JEV'S 2025</span>
+            </a>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#overview" class="hover:text-blue-700 transition">Visão Geral</a>
+                <a href="#modalities" class="hover:text-blue-700 transition">Modalidades</a>
+                <a href="#timeline" class="hover:text-blue-700 transition">Prazos</a>
+                <a href="#scoring" class="hover:text-blue-700 transition">Pontuação</a>
+                <a href="#rules" class="hover:text-blue-700 transition">Regras</a>
+            </div>
+            <a href="#timeline" class="hidden md:block bg-blue-700 text-white px-5 py-2 rounded-full hover:bg-blue-800 transition shadow-lg shadow-blue-500/20">
+                Inscreva-se
+            </a>
+            <button id="mobile-menu-button" class="md:hidden text-slate-800">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+            <a href="#overview" class="block py-2 hover:text-blue-700">Visão Geral</a>
+            <a href="#modalities" class="block py-2 hover:text-blue-700">Modalidades</a>
+            <a href="#timeline" class="block py-2 hover:text-blue-700">Prazos</a>
+            <a href="#scoring" class="block py-2 hover:text-blue-700">Pontuação</a>
+            <a href="#rules" class="block py-2 hover:text-blue-700">Regras</a>
+            <a href="#timeline" class="block mt-2 bg-blue-700 text-white text-center px-5 py-2 rounded-full hover:bg-blue-800 transition">
+                Inscreva-se
+            </a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6">
+
+        <!-- Overview Section -->
+        <section id="overview" class="py-20 md:py-28 text-center">
+            <h1 class="text-4xl md:text-6xl font-black mb-4"><span class="brand-gradient">Jogos Estudantis Vilelenses</span> 2025</h1>
+            <p class="text-lg text-slate-600 max-w-3xl mx-auto mb-8">O maior evento de esporte escolar de Teotônio Vilela está chegando! Prepare sua equipe para a XV Edição dos jogos.</p>
+
+            <div id="countdown" class="flex justify-center space-x-4 md:space-x-8 text-center my-12">
+                <div>
+                    <div id="days" class="text-4xl md:text-6xl font-bold text-blue-800 bg-white shadow-xl rounded-2xl p-4 min-w-[80px]">00</div>
+                    <div class="text-sm font-semibold text-slate-500 mt-2">DIAS</div>
+                </div>
+                <div>
+                    <div id="hours" class="text-4xl md:text-6xl font-bold text-blue-800 bg-white shadow-xl rounded-2xl p-4 min-w-[80px]">00</div>
+                    <div class="text-sm font-semibold text-slate-500 mt-2">HORAS</div>
+                </div>
+                <div>
+                    <div id="minutes" class="text-4xl md:text-6xl font-bold text-blue-800 bg-white shadow-xl rounded-2xl p-4 min-w-[80px]">00</div>
+                    <div class="text-sm font-semibold text-slate-500 mt-2">MINUTOS</div>
+                </div>
+                <div>
+                    <div id="seconds" class="text-4xl md:text-6xl font-bold text-blue-800 bg-white shadow-xl rounded-2xl p-4 min-w-[80px]">00</div>
+                    <div class="text-sm font-semibold text-slate-500 mt-2">SEGUNDOS</div>
+                </div>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto text-left mt-16">
+                <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100">
+                    <h3 class="font-bold text-lg text-slate-800 mb-2">🗓️ Datas do Evento</h3>
+                    <p class="text-slate-600">01 a 10 de Setembro de 2025</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100">
+                    <h3 class="font-bold text-lg text-slate-800 mb-2">🏆 Modalidades</h3>
+                    <p class="text-slate-600">15 modalidades coletivas e individuais.</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100">
+                    <h3 class="font-bold text-lg text-slate-800 mb-2">📍 Local Principal</h3>
+                    <p class="text-slate-600">Ginásio Poliesportivo "O Senadinho" e outros locais a definir.</p>
+                </div>
+            </div>
+
+            <div class="mt-16 max-w-4xl mx-auto">
+                <div class="bg-white p-8 rounded-2xl shadow-lg border border-slate-100 mb-8">
+                    <h3 class="text-2xl font-bold text-slate-800 mb-4">✨ Dicas de Treino e Alimentação</h3>
+                    <p class="text-slate-600 mb-4">Obtenha sugestões de treino e alimentação para melhorar capacidades específicas no seu esporte.</p>
+                    <input type="text" id="sport-input" placeholder="Ex: Futsal, Atletismo, Natação..." class="w-full p-3 border border-slate-300 rounded-lg mb-4 bg-white text-slate-700 focus:ring-blue-500 focus:border-blue-500">
+                    <button id="generate-training-nutrition-tips-btn" class="w-full bg-blue-700 text-white px-6 py-3 rounded-full hover:bg-blue-800 transition shadow-lg shadow-blue-500/20 flex items-center justify-center">
+                        Gerar Dicas Personalizadas
+                    </button>
+                    <div id="training-nutrition-tips-result" class="mt-4 p-4 bg-blue-50/50 rounded-lg hidden">
+                        <p id="training-nutrition-tips-loading" class="text-slate-500 italic"></p>
+                        <div id="training-nutrition-tips-content" class="text-slate-700 text-left"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modalities Section -->
+        <section id="modalities" class="py-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-800">Modalidades e Categorias</h2>
+                <p class="text-lg text-slate-600 max-w-2xl mx-auto mt-4">Explore as modalidades disponíveis. Use os filtros para ver as opções para cada categoria. Clique em uma modalidade para gerar um plano de treinamento ou ver detalhes de regras/histórico.</p>
+            </div>
+
+            <div class="flex justify-center space-x-2 md:space-x-4 mb-8 flex-wrap gap-2" id="category-filters">
+                <button data-category="all" class="category-btn bg-blue-700 text-white px-5 py-2 rounded-full font-semibold transition">Todas</button>
+                <button data-category="mirim" class="category-btn bg-white text-slate-700 px-5 py-2 rounded-full font-semibold transition hover:bg-slate-100">Mirim</button>
+                <button data-category="infantil" class="category-btn bg-white text-slate-700 px-5 py-2 rounded-full font-semibold transition hover:bg-slate-100">Infantil</button>
+                <button data-category="juvenil" class="category-btn bg-white text-slate-700 px-5 py-2 rounded-full font-semibold transition hover:bg-slate-100">Juvenil</button>
+            </div>
+
+            <div id="modalities-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- Modalities will be injected here by JS -->
+            </div>
+            
+            <div class="mt-20">
+                 <div class="text-center mb-8">
+                    <h3 class="text-2xl font-bold text-slate-800">Distribuição de Esportes por Categoria</h3>
+                    <p class="text-slate-600 mt-2">Visualização rápida do número de modalidades em cada categoria.</p>
+                </div>
+                <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-lg">
+                    <div class="chart-container">
+                        <canvas id="modalitiesChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Timeline Section -->
+        <section id="timeline" class="py-20">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-800">Prazos e Inscrições</h2>
+                <p class="text-lg text-slate-600 max-w-2xl mx-auto mt-4">Fique atento às datas mais importantes do JEV'S 2025. Não perca os prazos!</p>
+            </div>
+            <div class="relative max-w-4xl mx-auto">
+                <div class="absolute left-1/2 -translate-x-1/2 h-full w-1 bg-blue-200 rounded-full"></div>
+                
+                <div class="relative mb-8">
+                    <div class="flex items-center justify-start md:justify-end md:mr-8">
+                        <div class="w-full md:w-1/2 md:text-right p-4">
+                            <div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-100">
+                                <p class="text-sm font-semibold text-blue-600">08 de Agosto de 2025</p>
+                                <h3 class="text-xl font-bold my-1">I Congresso Técnico</h3>
+                                <p class="text-slate-600">Apresentação do regulamento geral e específico das modalidades.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-8 h-8 bg-blue-700 rounded-full border-4 border-white flex items-center justify-center text-white font-bold">1</div>
+                </div>
+
+                <div class="relative mb-8">
+                    <div class="flex items-center justify-start md:ml-8">
+                        <div class="w-full md:w-1/2 p-4">
+                            <div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-100">
+                                <p class="text-sm font-semibold text-green-600">29 de Julho a 07 de Agosto de 2025</p>
+                                <h3 class="text-xl font-bold my-1">Período de Inscrições</h3>
+                                <p class="text-slate-600">Inscrição das equipes e atletas através do site oficial do evento. Atendimento e suporte no Auditório da SEMED a partir das 8h30.</p>
+                                <a href="https://sites.google.com/view/jogosestudantisvilelenses/" target="_blank" class="inline-block mt-3 text-blue-700 font-semibold hover:underline">Acessar Site →</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-8 h-8 bg-green-600 rounded-full border-4 border-white flex items-center justify-center text-white font-bold">2</div>
+                </div>
+
+                <div class="relative">
+                    <div class="flex items-center justify-start md:justify-end md:mr-8">
+                        <div class="w-full md:w-1/2 md:text-right p-4">
+                           <div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-100">
+                                <p class="text-sm font-semibold text-purple-600">01 a 10 de Setembro de 2025</p>
+                                <h3 class="text-xl font-bold my-1">Realização dos Jogos</h3>
+                                <p class="text-slate-600">Abertura no dia 01/09, seguida pelas competições em todas as modalidades.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-8 h-8 bg-purple-600 rounded-full border-4 border-white flex items-center justify-center text-white font-bold">3</div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Scoring Section -->
+        <section id="scoring" class="py-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-800">Pontuação e Premiação</h2>
+                <p class="text-lg text-slate-600 max-w-2xl mx-auto mt-4">Entenda como as instituições e atletas são pontuados e premiados nos JEV'S 2025.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <div class="bg-white p-8 rounded-2xl shadow-lg border border-slate-100">
+                    <h3 class="text-2xl font-bold text-slate-800 mb-4">Critérios de Pontuação da Modalidade (Art. 56)</h3>
+                    <p class="text-slate-600 mb-4">A pontuação das instituições para o quadro geral é diferente para modalidades individuais/lutas e coletivas:</p>
+                    <div class="mb-6">
+                        <h4 class="font-bold text-lg text-blue-700 mb-2">Modalidades Individuais e Lutas:</h4>
+                        <ul class="list-disc list-inside text-slate-600">
+                            <li>Medalha de Ouro: **3 pontos**</li>
+                            <li>Medalha de Prata: **2 pontos**</li>
+                            <li>Medalha de Bronze: **1 ponto**</li>
+                        </ul>
+                        <p class="text-sm text-slate-500 mt-2">A pontuação final da instituição é o somatório de todas as medalhas conquistadas.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg text-green-600 mb-2">Modalidades Coletivas:</h4>
+                        <ul class="list-disc list-inside text-slate-600">
+                            <li>1º Lugar: **10 pontos**</li>
+                            <li>2º Lugar: **7 pontos**</li>
+                            <li>3º Lugar: **5 pontos**</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl shadow-lg border border-slate-100">
+                    <h3 class="text-2xl font-bold text-slate-800 mb-4">Classificação Geral e por Categoria (Art. 55)</h3>
+                    <p class="text-slate-600 mb-4">A classificação das instituições é feita pelo somatório dos pontos obtidos em todas as modalidades, gêneros e categorias.</p>
+                    <h4 class="font-bold text-lg text-blue-700 mb-2">Critérios de Desempate (Art. 55, § 3º):</h4>
+                    <ol class="list-decimal list-inside text-slate-600 space-y-1">
+                        <li>Maior número de primeiros lugares (Ouro);</li>
+                        <li>Maior número de segundos lugares (Prata);</li>
+                        <li>Maior número de terceiros lugares (Bronze);</li>
+                        <li>Maior número total de atletas participantes na competição;</li>
+                        <li>Persistindo o empate, a decisão será por sorteio.</li>
+                    </ol>
+                    <h4 class="font-bold text-lg text-slate-800 mt-6 mb-2">Premiação (Art. 57 e 59):</h4>
+                    <p class="text-slate-600">Troféus para as instituições campeãs (geral e por categoria) e medalhas para os alunos-atletas e técnicos (1º, 2º e 3º lugares) em cada modalidade, gênero e categoria.</p>
+                </div>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow-lg border border-slate-100 mt-8 max-w-4xl mx-auto">
+                <h3 class="text-2xl font-bold text-slate-800 mb-4">Regra de Pontuação Mínima da Modalidade (Art. 54)</h3>
+                <p class="text-slate-600 mb-4">Para que uma modalidade (gênero e categoria) possa pontuar para a classificação geral das Instituições de Ensino, ela deverá estar presente em pelo menos **50% do total de Instituições de Ensino inscritas** no JEV'S 2025.</p>
+                <p class="text-slate-600 mb-4">Caso não atinja esse percentual para a classificação geral, a modalidade poderá pontuar na **classificação da sua respectiva categoria** (Mirim, Infantil ou Juvenil), desde que atinja o mínimo de **50% do total de Instituições de Ensino que tenham equipes ou atletas inscritos naquela categoria específica.**</p>
+                <p class="text-slate-600">Se a modalidade não atingir nenhum dos percentuais mínimos para pontuação, as disputas ainda serão realizadas (com mínimo de 3 instituições inscritas), mas seus resultados **não serão considerados** para a pontuação geral nem por categoria, servindo apenas para participação e desenvolvimento esportivo.</p>
+            </div>
+        </section>
+
+        <!-- Rules Section -->
+        <section id="rules" class="py-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-800">Regras Essenciais</h2>
+                <p class="text-lg text-slate-600 max-w-2xl mx-auto mt-4">Um resumo dos pontos mais importantes do regulamento para consulta rápida.</p>
+            </div>
+            <div class="max-w-4xl mx-auto space-y-4" id="accordion">
+                <!-- Accordion items will be injected here by JS -->
+            </div>
+
+            <div class="max-w-4xl mx-auto mt-16 bg-white p-8 rounded-2xl shadow-lg border border-slate-100">
+                <h3 class="text-2xl font-bold text-slate-800 mb-4">✨ Explicar Regra em Detalhe com IA</h3>
+                <p class="text-slate-600 mb-4">Selecione uma regra para obter uma explicação mais aprofundada, ideal para professores e técnicos.</p>
+                <select id="rule-elaborate-selector" class="w-full p-3 border border-slate-300 rounded-lg mb-4 bg-white text-slate-700 focus:ring-blue-500 focus:border-blue-500">
+                    <option value="">Selecione um tópico...</option>
+                </select>
+                <button id="elaborate-rule-btn" class="w-full bg-blue-700 text-white px-6 py-3 rounded-full hover:bg-blue-800 transition shadow-lg shadow-blue-500/20 flex items-center justify-center">
+                    Gerar Explicação Detalhada
+                </button>
+                <div id="rule-elaborate-result" class="mt-4 p-4 bg-blue-50/50 rounded-lg hidden">
+                    <p id="rule-elaborate-loading" class="text-slate-500 italic"></p>
+                    <div id="rule-elaborate-content" class="text-slate-700 text-left"></div>
+                </div>
+            </div>
+
+            <div class="max-w-4xl mx-auto mt-8 bg-white p-8 rounded-2xl shadow-lg border border-slate-100">
+                <h3 class="text-2xl font-bold text-slate-800 mb-4">✨ Resumir Regra com IA (para Alunos)</h3>
+                <p class="text-slate-600 mb-4">Selecione uma regra para obter um resumo conciso e fácil de entender, ideal para atletas.</p>
+                <select id="rule-summary-selector" class="w-full p-3 border border-slate-300 rounded-lg mb-4 bg-white text-slate-700 focus:ring-blue-500 focus:border-blue-500">
+                    <option value="">Selecione um tópico...</option>
+                </select>
+                <button id="summarize-rule-btn" class="w-full bg-blue-700 text-white px-6 py-3 rounded-full hover:bg-blue-800 transition shadow-lg shadow-blue-500/20 flex items-center justify-center">
+                    Gerar Resumo Simples
+                </button>
+                <div id="rule-summary-result" class="mt-4 p-4 bg-blue-50/50 rounded-lg hidden">
+                    <p id="rule-summary-loading" class="text-slate-500 italic"></p>
+                    <div id="rule-summary-content" class="text-slate-700 text-left"></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modality AI Modal -->
+    <div id="modality-ai-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button id="close-modal-btn" class="absolute top-4 right-4 text-slate-500 hover:text-slate-800 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h3 id="modal-modality-name" class="text-2xl font-bold text-slate-800 mb-6 text-center"></h3>
+            
+            <div id="modality-static-details" class="mb-6 text-center text-slate-600">
+                <!-- Icon, categories, type, athletes will go here -->
+            </div>
+
+            <div id="modality-description-area" class="mb-6">
+                <p id="modality-description-loading" class="text-slate-500 italic text-center"></p>
+                <div id="modality-description-content" class="text-slate-700 text-left"></div>
+            </div>
+
+            <div class="flex justify-center space-x-4 mb-6 flex-wrap gap-2">
+                <button id="generate-training-plan-btn" class="bg-blue-700 text-white px-5 py-2 rounded-full hover:bg-blue-800 transition shadow-lg shadow-blue-500/20 flex items-center justify-center">
+                    Elaborar Plano de Treinamento
+                </button>
+                <button id="view-rules-history-btn" class="bg-green-600 text-white px-5 py-2 rounded-full hover:bg-green-700 transition shadow-lg shadow-green-600/20 flex items-center justify-center">
+                    Ver Regras e Histórico
+                </button>
+            </div>
+
+            <div id="modality-ai-result" class="mt-4 p-4 bg-slate-50 rounded-lg border border-slate-200">
+                <p id="modality-ai-loading" class="text-slate-500 italic text-center"></p>
+                <div id="modality-ai-content" class="text-slate-700 text-left"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 text-slate-300 mt-20">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <p>&copy; 2025 Prefeitura Municipal de Teotônio Vilela - Secretaria de Educação.</p>
+            <p class="text-sm text-slate-400 mt-2">Desenvolvido para facilitar o acesso à informação dos JEV'S 2025.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            // --- DATA ---
+            const modalities = [
+                { name: 'Atletismo', icon: '🏃', type: 'Individual', athletes: '15-21 por gênero', categories: ['mirim', 'infantil', 'juvenil'] },
+                { name: 'Basquete', icon: '🏀', type: 'Coletivo', athletes: 'Até 10', categories: ['infantil', 'juvenil'] },
+                { name: 'Basquete 3x3', icon: '🏀', type: 'Coletivo', athletes: 'Até 4', categories: ['infantil', 'juvenil'] },
+                { name: 'Capoeira', icon: '🤸', type: 'Luta', athletes: 'Variável (peso/idade)', categories: ['mirim', 'infantil', 'juvenil'] },
+                { name: 'Cubo Mágico', icon: '🧊', type: 'Individual', athletes: 'Até 4', categories: ['mirim', 'infantil', 'juvenil'] },
+                { name: 'Futsal', icon: '⚽', type: 'Coletivo', athletes: 'Até 10', categories: ['mirim', 'infantil', 'juvenil'] },
+                { name: 'Futevôlei', icon: '🏐', type: 'Individual/Dupla', athletes: '2 duplas', categories: ['infantil', 'juvenil'] },
+                { name: 'Vôlei de praia', icon: '🏖️', type: 'Dupla', athletes: '2 duplas', categories: ['infantil', 'juvenil'] },
+                { name: 'Handebol', icon: '🤾', type: 'Coletivo', athletes: 'Até 12', categories: ['mirim', 'infantil', 'juvenil'] },
+                { name: 'Jiu-Jitsu', icon: '🥋', type: 'Luta', athletes: 'Variável (peso/idade)', categories: ['mirim', 'infantil', 'juvenil'] },
+                { name: 'Karatê', icon: '🥋', type: 'Luta', athletes: 'Variável (peso/idade)', categories: ['mirim', 'infantil', 'juvenil'] },
+                { name: 'Queimado', icon: '🎯', type: 'Coletivo', athletes: 'Até 12', categories: ['mirim', 'infantil', 'juvenil'] },
+                { name: 'Xadrez', icon: '♟️', type: 'Individual', athletes: 'Até 4', categories: ['mirim', 'infantil', 'juvenil'] },
+                { name: 'Judô', icon: '🥋', type: 'Luta', athletes: 'Variável (peso/idade)', categories: ['mirim', 'infantil', 'juvenil'] },
+                { name: 'Taekwondo', icon: '🥋', type: 'Luta', athletes: 'Variável (peso/idade)', categories: ['mirim', 'infantil', 'juvenil'] },
+                { name: 'Wrestling', icon: '🤼', type: 'Luta', athletes: 'Variável (peso/idade)', categories: ['infantil', 'juvenil'] },
+            ];
+
+            const rules = [
+                {
+                    title: "Composição das Equipes (Art. 17)",
+                    content: "Cada equipe pode ter até 14 participantes, sendo 12 atletas e 2 técnicos/auxiliares. A equipe de gestão (diretor/coordenador) pode ter até 2 membros inscritos, que podem ficar no banco de reservas e se responsabilizar pela equipe na ausência do técnico."
+                },
+                {
+                    title: "Condição de Participação (Art. 21-27)",
+                    content: "Podem participar alunos de 9 a 17 anos, regularmente matriculados. Cada atleta pode competir em até 3 modalidades (2 individuais e 1 coletiva). É obrigatória a presença de um responsável (técnico, auxiliar ou gestor) inscrito na súmula durante os jogos."
+                },
+                {
+                    title: "Sistema de Competição (Art. 37-45)",
+                    content: "As competições só ocorrem com no mínimo 3 instituições inscritas. O sistema de disputa (rodízio, cruzamento, etc.) varia conforme o número de equipes. Os detalhes e chaveamentos são definidos no Congresso Técnico. Equipes podem jogar mais de uma vez por dia, com intervalo mínimo de 2 horas."
+                },
+                {
+                    title: "Regra de W.O. (Art. 47)",
+                    content: "A tolerância de atraso é de 15 minutos para a primeira partida do dia. Para as demais, a tolerância é de 5 minutos. O W.O. não elimina a equipe em fases de rodízio, mas o caso é encaminhado à Comissão Disciplinar. O placar do W.O. varia por modalidade (ex: Futsal 1x0, Basquete 20x0)."
+                },
+                {
+                    title: "Uniformes (Art. 60-63)",
+                    content: "As equipes devem se apresentar devidamente uniformizadas. Em caso de uniformes com cores coincidentes, um sorteio definirá qual equipe usará os coletes fornecidos pela organização. A comissão técnica também deve estar vestida adequadamente (camisa, calça/bermuda e calçado fechado)."
+                },
+                {
+                    title: "Protestos (Art. 65-68)",
+                    content: "Protestos devem ser formalizados em formulário próprio e entregues até as 20:00h do dia do fato via link oficial, ou presencialmente até as 18:00h. O reclamante deve apresentar provas materiais. Protestos infundados serão analisados pela Comissão Disciplinar."
+                },
+                {
+                    title: "Pontuação Mínima da Modalidade (Art. 54)",
+                    content: "Para pontuar na classificação geral, a modalidade (gênero e categoria) deve ter pelo menos 50% das instituições inscritas no JEV'S. Se não atingir, pode pontuar na categoria específica se tiver 50% das instituições inscritas naquela categoria. Se não atingir nenhum, a disputa é só para participação (mínimo 3 instituições), sem pontuação."
+                }
+            ];
+
+            // --- MOBILE MENU ---
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+            
+            // --- COUNTDOWN ---
+            const countdownElement = document.getElementById('countdown');
+            if(countdownElement) {
+                const eventDate = new Date('2025-09-01T10:00:00').getTime(); // Updated to 10:00 AM
+
+                const updateCountdown = () => {
+                    const now = new Date().getTime();
+                    const distance = eventDate - now;
+
+                    if (distance < 0) {
+                        document.getElementById('countdown').innerHTML = `<div class="text-2xl font-bold text-green-600 bg-white/80 p-6 rounded-2xl shadow-lg">O JEV'S 2025 já começou!</div>`;
+                        return;
+                    }
+
+                    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                    document.getElementById('days').innerText = String(days).padStart(2, '0');
+                    document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+                    document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+                    document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+                };
+
+                setInterval(updateCountdown, 1000);
+                updateCountdown();
+            }
+
+            // --- MODALITIES FILTERING ---
+            const modalitiesGrid = document.getElementById('modalities-grid');
+            const categoryFilters = document.getElementById('category-filters');
+            const categoryButtons = categoryFilters ? categoryFilters.querySelectorAll('.category-btn') : [];
+
+            const renderModalities = (category = 'all') => {
+                if (!modalitiesGrid) return; // Null check
+                modalitiesGrid.innerHTML = '';
+                const filteredModalities = category === 'all'
+                    ? modalities
+                    : modalities.filter(m => m.categories.includes(category));
+                
+                filteredModalities.forEach(mod => {
+                    const card = document.createElement('div');
+                    card.className = `modality-card bg-white p-6 rounded-2xl shadow-md border border-slate-100 transform hover:-translate-y-1 transition duration-300 flex flex-col items-center text-center cursor-pointer`;
+                    card.dataset.categories = mod.categories.join(' ');
+                    card.dataset.modalityName = mod.name; // Store modality name for AI features
+                    card.dataset.modalityIcon = mod.icon;
+                    card.dataset.modalityType = mod.type;
+                    card.dataset.modalityAthletes = mod.athletes;
+
+
+                    card.innerHTML = `
+                        <div class="text-5xl mb-4">${mod.icon}</div>
+                        <h4 class="font-bold text-lg text-slate-800 flex-grow">${mod.name}</h4>
+                        <div class="flex space-x-2 mt-4">
+                            ${mod.categories.includes('mirim') ? '<span class="bg-yellow-200 text-yellow-800 text-xs font-semibold px-2 py-1 rounded-full">Mirim</span>' : ''}
+                            ${mod.categories.includes('infantil') ? '<span class="bg-green-200 text-green-800 text-xs font-semibold px-2 py-1 rounded-full">Infantil</span>' : ''}
+                            ${mod.categories.includes('juvenil') ? '<span class="bg-blue-200 text-blue-800 text-xs font-semibold px-2 py-1 rounded-full">Juvenil</span>' : ''}
+                        </div>
+                    `;
+                    modalitiesGrid.appendChild(card);
+                });
+            };
+
+            if (categoryFilters) { // Null check
+                categoryFilters.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('category-btn')) {
+                        const selectedCategory = e.target.dataset.category;
+                        
+                        categoryButtons.forEach(btn => {
+                            btn.classList.remove('bg-blue-700', 'text-white');
+                            btn.classList.add('bg-white', 'text-slate-700');
+                        });
+                        
+                        e.target.classList.add('bg-blue-700', 'text-white');
+                        e.target.classList.remove('bg-white', 'text-slate-700');
+
+                        renderModalities(selectedCategory);
+                    }
+                });
+            }
+
+            // --- ACCORDION ---
+            const accordion = document.getElementById('accordion');
+            if (accordion) { // Null check
+                rules.forEach((rule, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'bg-white rounded-2xl shadow-md border border-slate-100 overflow-hidden';
+                    item.innerHTML = `
+                        <button class="accordion-toggle w-full flex justify-between items-center p-6 text-left font-semibold text-slate-800 hover:bg-slate-50 transition">
+                            <span>${rule.title}</span>
+                            <svg class="accordion-icon w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="accordion-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
+                            <div class="p-6 pt-0 text-slate-600">
+                                <p>${rule.content}</p>
+                            </div>
+                        </div>
+                    `;
+                    accordion.appendChild(item);
+                });
+                
+                accordion.addEventListener('click', (e) => {
+                    const toggle = e.target.closest('.accordion-toggle');
+                    if (toggle) {
+                        const content = toggle.nextElementSibling;
+                        const icon = toggle.querySelector('.accordion-icon');
+                        
+                        // Close all others
+                        document.querySelectorAll('.accordion-content').forEach(el => {
+                            if (el !== content) {
+                                el.style.maxHeight = null;
+                                const otherIcon = el.previousElementSibling ? el.previousElementSibling.querySelector('.accordion-icon') : null;
+                                if (otherIcon) otherIcon.classList.remove('rotate-180');
+                            }
+                        });
+
+                        // Toggle current
+                        if (content.style.maxHeight) {
+                            content.style.maxHeight = null;
+                            icon.classList.remove('rotate-180');
+                        } else {
+                            content.style.maxHeight = content.scrollHeight + "px";
+                            icon.classList.add('rotate-180');
+                        }
+                    }
+                });
+            }
+
+
+            // --- MODALITIES CHART ---
+            const mirimCount = modalities.filter(m => m.categories.includes('mirim')).length;
+            const infantilCount = modalities.filter(m => m.categories.includes('infantil')).length;
+            const juvenilCount = modalities.filter(m => m.categories.includes('juvenil')).length;
+
+            const ctx = document.getElementById('modalitiesChart');
+            if (ctx) { // Null check
+                new Chart(ctx.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['Mirim (9-11 anos)', 'Infantil (12-14 anos)', 'Juvenil (15-17 anos)'],
+                        datasets: [{
+                            label: 'Nº de Modalidades',
+                            data: [mirimCount, infantilCount, juvenilCount],
+                            backgroundColor: [
+                                'rgba(253, 224, 71, 0.6)', // yellow-300
+                                'rgba(74, 222, 128, 0.6)', // green-400
+                                'rgba(96, 165, 250, 0.6)'  // blue-400
+                            ],
+                            borderColor: [
+                                'rgba(253, 224, 71, 1)',
+                                'rgba(74, 222, 128, 1)',
+                                'rgba(96, 165, 250, 1)'
+                            ],
+                            borderWidth: 1,
+                            borderRadius: 8,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                backgroundColor: '#1e293b', // slate-800
+                                titleFont: { size: 14, weight: 'bold' },
+                                bodyFont: { size: 12 },
+                                padding: 12,
+                                cornerRadius: 8,
+                                displayColors: false,
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: {
+                                    color: '#e2e8f0' // slate-200
+                                },
+                                ticks: {
+                                    color: '#475569' // slate-600
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    color: '#475569' // slate-600
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+
+            // --- LLM INTEGRATIONS ---
+            const generateOpeningIdeasBtn = document.getElementById('generate-opening-ideas-btn');
+            const openingIdeasResult = document.getElementById('opening-ideas-result');
+            const openingIdeasLoading = document.getElementById('opening-ideas-loading');
+            const openingIdeasContent = document.getElementById('opening-ideas-content');
+
+            if (generateOpeningIdeasBtn) { // Null check
+                generateOpeningIdeasBtn.addEventListener('click', async () => {
+                    if (openingIdeasResult) openingIdeasResult.classList.remove('hidden');
+                    if (openingIdeasLoading) openingIdeasLoading.textContent = 'Gerando ideias... Por favor, aguarde.';
+                    if (openingIdeasContent) openingIdeasContent.innerHTML = '';
+
+                    const prompt = "Gere 3 ideias criativas para a cerimônia de abertura dos Jogos Estudantis Vilelenses (JEV'S 2025), considerando que é um evento escolar que celebra esporte, educação e união. Inclua sugestões para tema, atividades e um breve discurso inspirador para cada ideia. Formate a resposta com tópicos claros para cada ideia.";
+                    let chatHistory = [];
+                    chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                    const payload = { contents: chatHistory };
+                    const apiKey = ""; 
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                    try {
+                        const response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+                        const result = response.ok ? await response.json() : await response.text(); // Handle non-JSON response
+                        if (response.ok && result.candidates && result.candidates.length > 0 &&
+                            result.candidates[0].content && result.candidates[0].content.parts &&
+                            result.candidates[0].content.parts.length > 0) {
+                            const text = result.candidates[0].content.parts[0].text;
+                            if (openingIdeasContent) openingIdeasContent.innerHTML = text.replace(/\n/g, '<br>');
+                            if (openingIdeasLoading) openingIdeasLoading.textContent = '';
+                        } else {
+                            if (openingIdeasLoading) openingIdeasLoading.textContent = `Não foi possível gerar ideias. Erro: ${typeof result === 'string' ? result : 'Resposta inesperada.'}`;
+                        }
+                    } catch (error) {
+                        console.error('Erro ao chamar a API Gemini para ideias de abertura:', error);
+                        if (openingIdeasLoading) openingIdeasLoading.textContent = 'Erro ao gerar ideias. Verifique sua conexão ou tente mais tarde.';
+                    }
+                });
+            }
+
+            const generateTrainingNutritionTipsBtn = document.getElementById('generate-training-nutrition-tips-btn');
+            const sportInput = document.getElementById('sport-input');
+            const trainingNutritionTipsResult = document.getElementById('training-nutrition-tips-result');
+            const trainingNutritionTipsLoading = document.getElementById('training-nutrition-tips-loading');
+            const trainingNutritionTipsContent = document.getElementById('training-nutrition-tips-content');
+
+            if (generateTrainingNutritionTipsBtn && sportInput) { // Null checks
+                generateTrainingNutritionTipsBtn.addEventListener('click', async () => {
+                    const sportName = sportInput.value.trim();
+                    if (!sportName) {
+                        if (trainingNutritionTipsResult) trainingNutritionTipsResult.classList.remove('hidden');
+                        if (trainingNutritionTipsLoading) trainingNutritionTipsLoading.textContent = '';
+                        if (trainingNutritionTipsContent) trainingNutritionTipsContent.innerHTML = '<p class="text-red-500">Por favor, digite o nome de um esporte.</p>';
+                        return;
+                    }
+
+                    if (trainingNutritionTipsResult) trainingNutritionTipsResult.classList.remove('hidden');
+                    if (trainingNutritionTipsLoading) trainingNutritionTipsLoading.textContent = `Gerando dicas de treino e alimentação para ${sportName}... Por favor, aguarde.`;
+                    if (trainingNutritionTipsContent) trainingNutritionTipsContent.innerHTML = '';
+
+                    const prompt = `Gere dicas de treino e alimentação para atletas escolares de ${sportName} que desejam melhorar capacidades específicas e otimizar seu desempenho. Inclua sugestões para treino (ex: força, velocidade, resistência, técnica) e alimentação (ex: pré-treino, pós-treino, hidratação). Formate a resposta com tópicos claros.`;
+                    let chatHistory = [];
+                    chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                    const payload = { contents: chatHistory };
+                    const apiKey = ""; 
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                    try {
+                        const response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+                        const result = response.ok ? await response.json() : await response.text(); // Handle non-JSON response
+                        if (response.ok && result.candidates && result.candidates.length > 0 &&
+                            result.candidates[0].content && result.candidates[0].content.parts &&
+                            result.candidates[0].content.parts.length > 0) {
+                            const text = result.candidates[0].content.parts[0].text;
+                            if (trainingNutritionTipsContent) trainingNutritionTipsContent.innerHTML = text.replace(/\n/g, '<br>');
+                            if (trainingNutritionTipsLoading) trainingNutritionTipsLoading.textContent = '';
+                        } else {
+                            if (trainingNutritionTipsLoading) trainingNutritionTipsLoading.textContent = `Não foi possível gerar as dicas. Erro: ${typeof result === 'string' ? result : 'Resposta inesperada.'}`;
+                        }
+                    } catch (error) {
+                        console.error('Erro ao chamar a API Gemini para dicas de treino e alimentação:', error);
+                        if (trainingNutritionTipsLoading) trainingNutritionTipsLoading.textContent = 'Erro ao gerar dicas. Verifique sua conexão ou tente mais tarde.';
+                    }
+                });
+            }
+
+
+            const ruleElaborateSelector = document.getElementById('rule-elaborate-selector');
+            const elaborateRuleBtn = document.getElementById('elaborate-rule-btn');
+            const ruleElaborateResult = document.getElementById('rule-elaborate-result');
+            const ruleElaborateLoading = document.getElementById('rule-elaborate-loading');
+            const ruleElaborateContent = document.getElementById('rule-elaborate-content');
+
+            if (ruleElaborateSelector) { // Null check
+                // Populate rule elaborate selector
+                rules.forEach((rule, index) => {
+                    const option = document.createElement('option');
+                    option.value = index;
+                    option.textContent = rule.title;
+                    ruleElaborateSelector.appendChild(option);
+                });
+            }
+
+            if (elaborateRuleBtn) { // Null check
+                elaborateRuleBtn.addEventListener('click', async () => {
+                    const selectedIndex = ruleElaborateSelector ? ruleElaborateSelector.value : "";
+                    if (selectedIndex === "") {
+                        if (ruleElaborateResult) ruleElaborateResult.classList.remove('hidden');
+                        if (ruleElaborateLoading) ruleElaborateLoading.textContent = '';
+                        if (ruleElaborateContent) ruleElaborateContent.innerHTML = '<p class="text-red-500">Por favor, selecione um tópico de regra para detalhar.</p>';
+                        return;
+                    }
+
+                    const ruleContent = rules[selectedIndex].content;
+                    const ruleTitle = rules[selectedIndex].title;
+
+                    if (ruleElaborateResult) ruleElaborateResult.classList.remove('hidden');
+                    if (ruleElaborateLoading) ruleElaborateLoading.textContent = 'Gerando explicação detalhada... Por favor, aguarde.';
+                    if (ruleElaborateContent) ruleElaborateContent.innerHTML = '';
+
+                    const prompt = `Explique em detalhes a regra sobre '${ruleTitle}' do regulamento dos Jogos Estudantis Vilelenses, considerando o contexto de um professor ou técnico. A regra original é: '${ruleContent.replace(/<[^>]*>?/gm, '')}'. Dê exemplos práticos se possível. Formate a resposta de forma clara e didática.`; 
+                    
+                    let chatHistory = [];
+                    chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                    const payload = { contents: chatHistory };
+                    const apiKey = ""; 
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                    try {
+                        const response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+                        const result = response.ok ? await response.json() : await response.text(); // Handle non-JSON response
+                        if (response.ok && result.candidates && result.candidates.length > 0 &&
+                            result.candidates[0].content && result.candidates[0].content.parts &&
+                            result.candidates[0].content.parts.length > 0) {
+                            const text = result.candidates[0].content.parts[0].text;
+                            if (ruleElaborateContent) ruleElaborateContent.innerHTML = text.replace(/\n/g, '<br>');
+                            if (ruleElaborateLoading) ruleElaborateLoading.textContent = '';
+                        } else {
+                            if (ruleElaborateLoading) ruleElaborateLoading.textContent = `Não foi possível gerar a explicação. Erro: ${typeof result === 'string' ? result : 'Resposta inesperada.'}`;
+                        }
+                    } catch (error) {
+                        console.error('Erro ao chamar a API Gemini para detalhamento de regra:', error);
+                        if (ruleElaborateLoading) ruleElaborateLoading.textContent = 'Erro ao gerar explicação. Verifique sua conexão ou tente mais tarde.';
+                    }
+                });
+            }
+
+            const ruleSummarySelector = document.getElementById('rule-summary-selector');
+            const summarizeRuleBtn = document.getElementById('summarize-rule-btn');
+            const ruleSummaryResult = document.getElementById('rule-summary-result');
+            const ruleSummaryLoading = document.getElementById('rule-summary-loading');
+            const ruleSummaryContent = document.getElementById('rule-summary-content');
+
+            if (ruleSummarySelector) { // Null check
+                // Populate rule summary selector
+                rules.forEach((rule, index) => {
+                    const option = document.createElement('option');
+                    option.value = index;
+                    option.textContent = rule.title;
+                    ruleSummarySelector.appendChild(option);
+                });
+            }
+
+            if (summarizeRuleBtn) { // Null check
+                summarizeRuleBtn.addEventListener('click', async () => {
+                    const selectedIndex = ruleSummarySelector ? ruleSummarySelector.value : "";
+                    if (selectedIndex === "") {
+                        if (ruleSummaryResult) ruleSummaryResult.classList.remove('hidden');
+                        if (ruleSummaryLoading) ruleSummaryLoading.textContent = '';
+                        if (ruleSummaryContent) ruleSummaryContent.innerHTML = '<p class="text-red-500">Por favor, selecione um tópico de regra para resumir.</p>';
+                        return;
+                    }
+
+                    const ruleContent = rules[selectedIndex].content;
+                    const ruleTitle = rules[selectedIndex].title;
+
+                    if (ruleSummaryResult) ruleSummaryResult.classList.remove('hidden');
+                    if (ruleSummaryLoading) ruleSummaryLoading.textContent = 'Gerando resumo... Por favor, aguarde.';
+                    if (ruleSummaryContent) ruleSummaryContent.innerHTML = '';
+
+                    const prompt = `Resuma a seguinte regra dos Jogos Estudantis Vilelenses (JEV'S 2025) de forma concisa e clara para um atleta, focando nos pontos mais importantes. O título da regra é "${ruleTitle}". O conteúdo completo é: "${ruleContent.replace(/<[^>]*>?/gm, '')}"`; // Remove HTML tags from content
+                    
+                    let chatHistory = [];
+                    chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                    const payload = { contents: chatHistory };
+                    const apiKey = ""; 
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                    try {
+                        const response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+                        const result = response.ok ? await response.json() : await response.text(); // Handle non-JSON response
+                        if (response.ok && result.candidates && result.candidates.length > 0 &&
+                            result.candidates[0].content && result.candidates[0].content.parts &&
+                            result.candidates[0].content.parts.length > 0) {
+                            const text = result.candidates[0].content.parts[0].text;
+                            if (ruleSummaryContent) ruleSummaryContent.innerHTML = text.replace(/\n/g, '<br>');
+                            if (ruleSummaryLoading) ruleSummaryLoading.textContent = '';
+                        } else {
+                            if (ruleSummaryLoading) ruleSummaryLoading.textContent = `Não foi possível gerar o resumo. Erro: ${typeof result === 'string' ? result : 'Resposta inesperada.'}`;
+                        }
+                    } catch (error) {
+                        console.error('Erro ao chamar a API Gemini para resumo de regra:', error);
+                        if (ruleSummaryLoading) ruleSummaryLoading.textContent = 'Erro ao gerar o resumo. Verifique sua conexão ou tente mais tarde.';
+                    }
+                });
+            }
+
+            // --- Modality AI Modal Logic ---
+            const modalityAiModal = document.getElementById('modality-ai-modal');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const modalModalityName = document.getElementById('modal-modality-name');
+            const generateTrainingPlanBtn = document.getElementById('generate-training-plan-btn');
+            const viewRulesHistoryBtn = document.getElementById('view-rules-history-btn');
+            const modalityAiResult = document.getElementById('modality-ai-result');
+            const modalityAiLoading = document.getElementById('modality-ai-loading');
+            const modalityAiContent = document.getElementById('modality-ai-content');
+            const modalityStaticDetails = document.getElementById('modality-static-details');
+            const modalityDescriptionArea = document.getElementById('modality-description-area');
+            const modalityDescriptionLoading = document.getElementById('modality-description-loading');
+            const modalityDescriptionContent = document.getElementById('modality-description-content');
+
+
+            let currentModalityName = ''; // To store the name of the modality clicked
+
+            // Event delegation for modality cards
+            if (modalitiesGrid) { // Null check for modalitiesGrid
+                modalitiesGrid.addEventListener('click', async (e) => {
+                    const card = e.target.closest('.modality-card');
+                    if (!card) return; // Not a modality card click
+
+                    currentModalityName = card.dataset.modalityName;
+                    const modalityIcon = card.dataset.modalityIcon;
+                    const modalityType = card.dataset.modalityType;
+                    const modalityAthletes = card.dataset.modalityAthletes;
+                    const modalityCategories = card.dataset.categories.split(' ').map(cat => {
+                        let colorClass = '';
+                        if (cat === 'mirim') colorClass = 'bg-yellow-200 text-yellow-800';
+                        else if (cat === 'infantil') colorClass = 'bg-green-200 text-green-800';
+                        else if (cat === 'juvenil') colorClass = 'bg-blue-200 text-blue-800';
+                        return `<span class="${colorClass} text-xs font-semibold px-2 py-1 rounded-full">${cat.charAt(0).toUpperCase() + cat.slice(1)}</span>`;
+                    }).join(' ');
+
+                    if (modalModalityName) modalModalityName.textContent = currentModalityName;
+                    
+                    // Populate static details
+                    if (modalityStaticDetails) {
+                        modalityStaticDetails.innerHTML = `
+                            <div class="text-6xl mb-2">${modalityIcon}</div>
+                            <p class="text-lg font-semibold mb-2">Tipo: ${modalityType}</p>
+                            <p class="text-lg font-semibold mb-2">Atletas: ${modalityAthletes || 'Não especificado'}</p>
+                            <div class="flex justify-center space-x-2">${modalityCategories}</div>
+                        `;
+                    }
+
+                    // Clear previous AI results and description
+                    if (modalityAiResult) modalityAiResult.classList.add('hidden');
+                    if (modalityAiLoading) modalityAiLoading.textContent = '';
+                    if (modalityAiContent) modalityAiContent.innerHTML = '';
+                    if (modalityDescriptionArea) modalityDescriptionArea.classList.remove('hidden'); // Ensure description area is visible
+                    if (modalityDescriptionLoading) modalityDescriptionLoading.textContent = '';
+                    if (modalityDescriptionContent) modalityDescriptionContent.innerHTML = '';
+
+                    // Generate and display description
+                    await generateModalityDescription(currentModalityName);
+
+                    if (modalityAiModal) modalityAiModal.classList.add('open');
+                });
+            }
+
+            if (closeModalBtn) { // Null check
+                closeModalBtn.addEventListener('click', () => {
+                    if (modalityAiModal) modalityAiModal.classList.remove('open');
+                });
+            }
+
+            if (modalityAiModal) { // Null check
+                modalityAiModal.addEventListener('click', (e) => {
+                    if (e.target === modalityAiModal) { // Close if clicked outside content
+                        modalityAiModal.classList.remove('open');
+                    }
+                });
+            }
+
+            // New function for generating modality description
+            async function generateModalityDescription(modalityName) {
+                if (modalityDescriptionLoading) modalityDescriptionLoading.textContent = `Gerando descrição para ${modalityName}... Por favor, aguarde.`;
+                if (modalityDescriptionContent) modalityDescriptionContent.innerHTML = '';
+
+                const prompt = `Forneça uma descrição concisa e envolvente da modalidade esportiva ${modalityName}, incluindo sua essência, objetivo principal e o que a torna interessante, para um público geral em um contexto de jogos estudantis.`;
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                const payload = { contents: chatHistory };
+                const apiKey = ""; 
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (!response.ok) {
+                        const errorData = await response.text();
+                        throw new Error(`API Error: ${response.status} ${response.statusText} - ${errorData}`);
+                    }
+                    const result = await response.json();
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        const text = result.candidates[0].content.parts[0].text;
+                        if (modalityDescriptionContent) modalityDescriptionContent.innerHTML = text.replace(/\n/g, '<br>');
+                        if (modalityDescriptionLoading) modalityDescriptionLoading.textContent = '';
+                    } else {
+                        if (modalityDescriptionLoading) modalityDescriptionLoading.textContent = 'Não foi possível gerar a descrição. Tente novamente.';
+                    }
+                } catch (error) {
+                    console.error('Erro ao chamar a API Gemini para descrição da modalidade:', error);
+                    if (modalityDescriptionLoading) modalityDescriptionLoading.textContent = 'Erro ao gerar descrição. Verifique sua conexão ou tente mais tarde.';
+                }
+            }
+
+
+            if (generateTrainingPlanBtn) { // Null check
+                generateTrainingPlanBtn.addEventListener('click', async () => {
+                    if (modalityAiResult) modalityAiResult.classList.remove('hidden');
+                    if (modalityAiLoading) modalityAiLoading.textContent = `Gerando plano de treinamento para ${currentModalityName}... Por favor, aguarde.`;
+                    if (modalityAiContent) modalityAiContent.innerHTML = '';
+
+                    const prompt = `Elabore um plano de treinamento básico para atletas escolares de ${currentModalityName} que participarão dos Jogos Estudantis Vilelenses. O plano deve focar em aspectos gerais de preparação física, técnica e tática, adequado para um período de 4 semanas. Inclua aquecimento, exercícios principais e alongamento.`;
+                    let chatHistory = [];
+                    chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                    const payload = { contents: chatHistory };
+                    const apiKey = ""; 
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                    try {
+                        const response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+                        const result = response.ok ? await response.json() : await response.text(); // Handle non-JSON response
+                        if (response.ok && result.candidates && result.candidates.length > 0 &&
+                            result.candidates[0].content && result.candidates[0].content.parts &&
+                            result.candidates[0].content.parts.length > 0) {
+                            const text = result.candidates[0].content.parts[0].text;
+                            if (modalityAiContent) modalityAiContent.innerHTML = text.replace(/\n/g, '<br>');
+                            if (modalityAiLoading) modalityAiLoading.textContent = '';
+                        } else {
+                            if (modalityAiLoading) modalityAiLoading.textContent = `Não foi possível gerar o plano de treinamento. Erro: ${typeof result === 'string' ? result : 'Resposta inesperada.'}`;
+                        }
+                    } catch (error) {
+                        console.error('Erro ao chamar a API Gemini para plano de treinamento:', error);
+                        if (modalityAiLoading) modalityAiLoading.textContent = 'Erro ao gerar plano. Verifique sua conexão ou tente mais tarde.';
+                    }
+                });
+            }
+
+            if (viewRulesHistoryBtn) { // Null check
+                viewRulesHistoryBtn.addEventListener('click', async () => {
+                    if (modalityAiResult) modalityAiResult.classList.remove('hidden');
+                    if (modalityAiLoading) modalityAiLoading.textContent = `Buscando aspectos de regras e histórico para ${currentModalityName}... Por favor, aguarde.`;
+                    if (modalityAiContent) modalityAiContent.innerHTML = '';
+
+                    const prompt = `Forneça aspectos importantes das regras e um breve histórico da modalidade ${currentModalityName}, focando em informações relevantes para um contexto de jogos estudantis.`;
+                    let chatHistory = [];
+                    chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                    const payload = { contents: chatHistory };
+                    const apiKey = ""; 
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                    try {
+                        const response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+                        const result = response.ok ? await response.json() : await response.text(); // Handle non-JSON response
+                        if (response.ok && result.candidates && result.candidates.length > 0 &&
+                            result.candidates[0].content && result.candidates[0].content.parts &&
+                            result.candidates[0].content.parts.length > 0) {
+                            const text = result.candidates[0].content.parts[0].text;
+                            if (modalityAiContent) modalityAiContent.innerHTML = text.replace(/\n/g, '<br>');
+                            if (modalityAiLoading) modalityAiLoading.textContent = '';
+                        } else {
+                            if (modalityAiLoading) modalityAiLoading.textContent = `Não foi possível buscar as informações. Erro: ${typeof result === 'string' ? result : 'Resposta inesperada.'}`;
+                        }
+                    } catch (error) {
+                        console.error('Erro ao chamar a API Gemini para regras/histórico:', error);
+                        if (modalityAiLoading) modalityAiLoading.textContent = 'Erro ao buscar informações. Verifique sua conexão ou tente mais tarde.';
+                    }
+                });
+            }
+
+
+            // --- INITIAL RENDER ---
+            renderModalities();
+        });
+    </script>
+</body>
+</html>
