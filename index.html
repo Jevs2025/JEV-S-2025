@@ -61,7 +61,8 @@
             padding: 30px;
             border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            max-width: 90%;
+            width: 100%;
+            max-width: 400px;
             max-height: 90%;
             overflow-y: auto;
             position: relative;
@@ -71,6 +72,10 @@
         .modal-overlay.open .modal-content {
             transform: translateY(0);
         }
+        .tab-btn.active {
+            background-color: #1e3a8a; /* bg-blue-800 */
+            color: white;
+        }
     </style>
 </head>
 <body class="text-slate-700">
@@ -79,19 +84,19 @@
     <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="#" class="flex items-center space-x-2">
-                 <div class="w-8 h-8 bg-blue-800 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                <div class="w-8 h-8 bg-blue-800 rounded-full flex items-center justify-center text-white font-bold text-lg">
                     J
-                 </div>
-                 <span class="text-xl font-bold text-slate-800">JEV'S 2025</span>
+                </div>
+                <span class="text-xl font-bold text-slate-800">JEV'S 2025</span>
             </a>
-            <div class="hidden md:flex items-center space-x-8">
+            <div id="main-nav" class="hidden md:flex items-center space-x-8">
                 <a href="#overview" class="hover:text-blue-700 transition">Visão Geral</a>
                 <a href="#modalities" class="hover:text-blue-700 transition">Modalidades</a>
                 <a href="#timeline" class="hover:text-blue-700 transition">Prazos</a>
                 <a href="#scoring" class="hover:text-blue-700 transition">Pontuação</a>
                 <a href="#rules" class="hover:text-blue-700 transition">Regras</a>
             </div>
-            <a href="links.html" class="hidden md:block bg-blue-700 text-white px-5 py-2 rounded-full hover:bg-blue-800 transition shadow-lg shadow-blue-500/20">
+            <a id="cta-button" href="links.html" class="hidden md:block bg-blue-700 text-white px-5 py-2 rounded-full hover:bg-blue-800 transition shadow-lg shadow-blue-500/20">
                 Inscreva-se
             </a>
             <button id="mobile-menu-button" class="md:hidden text-slate-800">
@@ -113,242 +118,278 @@
         </div>
     </header>
 
-    <main class="container mx-auto px-6">
-
-        <!-- Overview Section -->
-        <section id="overview" class="py-20 md:py-28 text-center">
-            <h1 class="text-4xl md:text-6xl font-black mb-4"><span class="brand-gradient">Jogos Estudantis Vilelenses</span> 2025</h1>
-            <p class="text-lg text-slate-600 max-w-3xl mx-auto mb-8">O maior evento de esporte escolar de Teotônio Vilela está chegando! Prepare sua equipe para a XV Edição dos jogos.</p>
-
-            <div id="countdown" class="flex justify-center space-x-4 md:space-x-8 text-center my-12">
-                <div>
-                    <div id="days" class="text-4xl md:text-6xl font-bold text-blue-800 bg-white shadow-xl rounded-2xl p-4 min-w-[80px]">00</div>
-                    <div class="text-sm font-semibold text-slate-500 mt-2">DIAS</div>
-                </div>
-                <div>
-                    <div id="hours" class="text-4xl md:text-6xl font-bold text-blue-800 bg-white shadow-xl rounded-2xl p-4 min-w-[80px]">00</div>
-                    <div class="text-sm font-semibold text-slate-500 mt-2">HORAS</div>
-                </div>
-                <div>
-                    <div id="minutes" class="text-4xl md:text-6xl font-bold text-blue-800 bg-white shadow-xl rounded-2xl p-4 min-w-[80px]">00</div>
-                    <div class="text-sm font-semibold text-slate-500 mt-2">MINUTOS</div>
-                </div>
-                <div>
-                    <div id="seconds" class="text-4xl md:text-6xl font-bold text-blue-800 bg-white shadow-xl rounded-2xl p-4 min-w-[80px]">00</div>
-                    <div class="text-sm font-semibold text-slate-500 mt-2">SEGUNDOS</div>
-                </div>
-            </div>
-            
-            <div class="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto text-left mt-16">
-                <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100">
-                    <h3 class="font-bold text-lg text-slate-800 mb-2">🗓️ Datas do Evento</h3>
-                    <p class="text-slate-600">01 a 10 de Setembro de 2025</p>
-                </div>
-                <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100">
-                    <h3 class="font-bold text-lg text-slate-800 mb-2">🏆 Modalidades</h3>
-                    <p class="text-slate-600">15 modalidades coletivas e individuais.</p>
-                </div>
-                <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100">
-                    <h3 class="font-bold text-lg text-slate-800 mb-2">📍 Local Principal</h3>
-                    <p class="text-slate-600">Ginásio Poliesportivo "O Senadinho" e outros locais a definir.</p>
-                </div>
-            </div>
-
-            <div class="mt-16 max-w-4xl mx-auto">
-                <div class="bg-white p-8 rounded-2xl shadow-lg border border-slate-100 mb-8">
-                    <h3 class="text-2xl font-bold text-slate-800 mb-4">✨ Dicas de Treino e Alimentação</h3>
-                    <p class="text-slate-600 mb-4">Obtenha sugestões de treino e alimentação para melhorar capacidades específicas no seu esporte.</p>
-                    <input type="text" id="sport-input" placeholder="Ex: Futsal, Atletismo, Natação..." class="w-full p-3 border border-slate-300 rounded-lg mb-4 bg-white text-slate-700 focus:ring-blue-500 focus:border-blue-500">
-                    <button id="generate-training-nutrition-tips-btn" class="w-full bg-blue-700 text-white px-6 py-3 rounded-full hover:bg-blue-800 transition shadow-lg shadow-blue-500/20 flex items-center justify-center">
-                        Gerar Dicas Personalizadas
-                    </button>
-                    <div id="training-nutrition-tips-result" class="mt-4 p-4 bg-blue-50/50 rounded-lg hidden">
-                        <p id="training-nutrition-tips-loading" class="text-slate-500 italic"></p>
-                        <div id="training-nutrition-tips-content" class="text-slate-700 text-left"></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Modalities Section -->
-        <section id="modalities" class="py-20">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold text-slate-800">Modalidades e Categorias</h2>
-                <p class="text-lg text-slate-600 max-w-2xl mx-auto mt-4">Explore as modalidades disponíveis. Use os filtros para ver as opções para cada categoria. Clique em uma modalidade para gerar um plano de treinamento ou ver detalhes de regras/histórico.</p>
-            </div>
-
-            <div class="flex justify-center space-x-2 md:space-x-4 mb-8 flex-wrap gap-2" id="category-filters">
-                <button data-category="all" class="category-btn bg-blue-700 text-white px-5 py-2 rounded-full font-semibold transition">Todas</button>
-                <button data-category="mirim" class="category-btn bg-white text-slate-700 px-5 py-2 rounded-full font-semibold transition hover:bg-slate-100">Mirim</button>
-                <button data-category="infantil" class="category-btn bg-white text-slate-700 px-5 py-2 rounded-full font-semibold transition hover:bg-slate-100">Infantil</button>
-                <button data-category="juvenil" class="category-btn bg-white text-slate-700 px-5 py-2 rounded-full font-semibold transition hover:bg-slate-100">Juvenil</button>
-            </div>
-
-            <div id="modalities-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                <!-- Modalities will be injected here by JS -->
-            </div>
-            
-            <div class="mt-20">
-                 <div class="text-center mb-8">
-                    <h3 class="text-2xl font-bold text-slate-800">Distribuição de Esportes por Categoria</h3>
-                    <p class="text-slate-600 mt-2">Visualização rápida do número de modalidades em cada categoria.</p>
-                </div>
-                <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-lg">
-                    <div class="chart-container">
-                        <canvas id="modalitiesChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Timeline Section -->
-        <section id="timeline" class="py-20">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold text-slate-800">Prazos e Inscrições</h2>
-                <p class="text-lg text-slate-600 max-w-2xl mx-auto mt-4">Fique atento às datas mais importantes do JEV'S 2025. Não perca os prazos!</p>
-            </div>
-            <div class="relative max-w-4xl mx-auto">
-                <div class="absolute left-1/2 -translate-x-1/2 h-full w-1 bg-blue-200 rounded-full"></div>
-                
-                <div class="relative mb-8">
-                    <div class="flex items-center justify-start md:justify-end md:mr-8">
-                        <div class="w-full md:w-1/2 md:text-right p-4">
-                            <div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-100">
-                                <p class="text-sm font-semibold text-blue-600">08 de Agosto de 2025</p>
-                                <h3 class="text-xl font-bold my-1">I Congresso Técnico</h3>
-                                <p class="text-slate-600">Apresentação do regulamento geral e específico das modalidades.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-8 h-8 bg-blue-700 rounded-full border-4 border-white flex items-center justify-center text-white font-bold">1</div>
-                </div>
-
-                <div class="relative mb-8">
-                    <div class="flex items-center justify-start md:ml-8">
-                        <div class="w-full md:w-1/2 p-4">
-                            <div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-100">
-                                <p class="text-sm font-semibold text-green-600">29 de Julho a 07 de Agosto de 2025</p>
-                                <h3 class="text-xl font-bold my-1">Período de Inscrições</h3>
-                                <p class="text-slate-600">Inscrição das equipes e atletas através do site oficial do evento. Atendimento e suporte no Auditório da SEMED a partir das 8h30.</p>
-                                <a href="links.html" target="_blank" class="inline-block mt-3 text-blue-700 font-semibold hover:underline">Acessar Site →</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-8 h-8 bg-green-600 rounded-full border-4 border-white flex items-center justify-center text-white font-bold">2</div>
-                </div>
-
-                <div class="relative">
-                    <div class="flex items-center justify-start md:justify-end md:mr-8">
-                        <div class="w-full md:w-1/2 md:text-right p-4">
-                           <div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-100">
-                                <p class="text-sm font-semibold text-purple-600">01 a 10 de Setembro de 2025</p>
-                                <h3 class="text-xl font-bold my-1">Realização dos Jogos</h3>
-                                <p class="text-slate-600">Abertura no dia 01/09, seguida pelas competições em todas as modalidades.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-8 h-8 bg-purple-600 rounded-full border-4 border-white flex items-center justify-center text-white font-bold">3</div>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- Scoring Section -->
-        <section id="scoring" class="py-20">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold text-slate-800">Pontuação e Premiação</h2>
-                <p class="text-lg text-slate-600 max-w-2xl mx-auto mt-4">Entenda como as instituições e atletas são pontuados e premiados nos JEV'S 2025.</p>
-            </div>
-
-            <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-                <div class="bg-white p-8 rounded-2xl shadow-lg border border-slate-100">
-                    <h3 class="text-2xl font-bold text-slate-800 mb-4">Critérios de Pontuação da Modalidade (Art. 56)</h3>
-                    <p class="text-slate-600 mb-4">A pontuação das instituições para o quadro geral é diferente para modalidades individuais/lutas e coletivas:</p>
-                    <div class="mb-6">
-                        <h4 class="font-bold text-lg text-blue-700 mb-2">Modalidades Individuais e Lutas:</h4>
-                        <ul class="list-disc list-inside text-slate-600">
-                            <li>Medalha de Ouro: **3 pontos**</li>
-                            <li>Medalha de Prata: **2 pontos**</li>
-                            <li>Medalha de Bronze: **1 ponto**</li>
-                        </ul>
-                        <p class="text-sm text-slate-500 mt-2">A pontuação final da instituição é o somatório de todas as medalhas conquistadas.</p>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-lg text-green-600 mb-2">Modalidades Coletivas:</h4>
-                        <ul class="list-disc list-inside text-slate-600">
-                            <li>1º Lugar: **10 pontos**</li>
-                            <li>2º Lugar: **7 pontos**</li>
-                            <li>3º Lugar: **5 pontos**</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="bg-white p-8 rounded-2xl shadow-lg border border-slate-100">
-                    <h3 class="text-2xl font-bold text-slate-800 mb-4">Classificação Geral e por Categoria (Art. 55)</h3>
-                    <p class="text-slate-600 mb-4">A classificação das instituições é feita pelo somatório dos pontos obtidos em todas as modalidades, gêneros e categorias.</p>
-                    <h4 class="font-bold text-lg text-blue-700 mb-2">Critérios de Desempate (Art. 55, § 3º):</h4>
-                    <ol class="list-decimal list-inside text-slate-600 space-y-1">
-                        <li>Maior número de primeiros lugares (Ouro);</li>
-                        <li>Maior número de segundos lugares (Prata);</li>
-                        <li>Maior número de terceiros lugares (Bronze);</li>
-                        <li>Maior número total de atletas participantes na competição;</li>
-                        <li>Persistindo o empate, a decisão será por sorteio.</li>
-                    </ol>
-                    <h4 class="font-bold text-lg text-slate-800 mt-6 mb-2">Premiação (Art. 57 e 59):</h4>
-                    <p class="text-slate-600">Troféus para as instituições campeãs (geral e por categoria) e medalhas para os alunos-atletas e técnicos (1º, 2º e 3º lugares) em cada modalidade, gênero e categoria.</p>
-                </div>
-            </div>
-
-            <div class="bg-white p-8 rounded-2xl shadow-lg border border-slate-100 mt-8 max-w-4xl mx-auto">
-                <h3 class="text-2xl font-bold text-slate-800 mb-4">Regra de Pontuação Mínima da Modalidade (Art. 54)</h3>
-                <p class="text-slate-600 mb-4">Para que uma modalidade (gênero e categoria) possa pontuar para a classificação geral das Instituições de Ensino, ela deverá estar presente em pelo menos **50% do total de Instituições de Ensino inscritas** no JEV'S 2025.</p>
-                <p class="text-slate-600 mb-4">Caso não atinja esse percentual para a classificação geral, a modalidade poderá pontuar na **classificação da sua respectiva categoria** (Mirim, Infantil ou Juvenil), desde que atinja o mínimo de **50% do total de Instituições de Ensino que tenham equipes ou atletas inscritos naquela categoria específica.**</p>
-                <p class="text-slate-600">Se a modalidade não atingir nenhum dos percentuais mínimos para pontuação, as disputas ainda serão realizadas (com mínimo de 3 instituições inscritas), mas seus resultados **não serão considerados** para a pontuação geral nem por categoria, servindo apenas para participação e desenvolvimento esportivo.</p>
-            </div>
-        </section>
-
-        <!-- Rules Section -->
-        <section id="rules" class="py-20">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold text-slate-800">Regras Essenciais</h2>
-                <p class="text-lg text-slate-600 max-w-2xl mx-auto mt-4">Um resumo dos pontos mais importantes do regulamento para consulta rápida.</p>
-            </div>
-            <div class="max-w-4xl mx-auto space-y-4" id="accordion">
-                <!-- Accordion items will be injected here by JS -->
-            </div>
-
-            <div class="max-w-4xl mx-auto mt-16 bg-white p-8 rounded-2xl shadow-lg border border-slate-100">
-                <h3 class="text-2xl font-bold text-slate-800 mb-4">✨ Explicar Regra em Detalhe com IA</h3>
-                <p class="text-slate-600 mb-4">Selecione uma regra para obter uma explicação mais aprofundada, ideal para professores e técnicos.</p>
-                <select id="rule-elaborate-selector" class="w-full p-3 border border-slate-300 rounded-lg mb-4 bg-white text-slate-700 focus:ring-blue-500 focus:border-blue-500">
-                    <option value="">Selecione um tópico...</option>
-                </select>
-                <button id="elaborate-rule-btn" class="w-full bg-blue-700 text-white px-6 py-3 rounded-full hover:bg-blue-800 transition shadow-lg shadow-blue-500/20 flex items-center justify-center">
-                    Gerar Explicação Detalhada
+    <div class="container mx-auto px-6">
+        <section id="profile-selector" class="py-20 text-center">
+            <h2 class="text-3xl font-bold text-slate-800 mb-4">Bem-vindo(a) ao Portal JEV'S 2025!</h2>
+            <p class="text-lg text-slate-600 max-w-2xl mx-auto mb-8">Para uma experiência personalizada, por favor, identifique seu perfil.</p>
+            <div class="flex flex-col md:flex-row justify-center items-center gap-4">
+                <button data-profile="teacher" class="profile-btn w-full md:w-auto bg-blue-700 text-white px-6 py-3 rounded-full hover:bg-blue-800 transition shadow-lg shadow-blue-500/20">
+                    👨‍🏫 Sou Professor/Técnico
                 </button>
-                <div id="rule-elaborate-result" class="mt-4 p-4 bg-blue-50/50 rounded-lg hidden">
-                    <p id="rule-elaborate-loading" class="text-slate-500 italic"></p>
-                    <div id="rule-elaborate-content" class="text-slate-700 text-left"></div>
-                </div>
-            </div>
-
-            <div class="max-w-4xl mx-auto mt-8 bg-white p-8 rounded-2xl shadow-lg border border-slate-100">
-                <h3 class="text-2xl font-bold text-slate-800 mb-4">✨ Resumir Regra com IA (para Alunos)</h3>
-                <p class="text-slate-600 mb-4">Selecione uma regra para obter um resumo conciso e fácil de entender, ideal para atletas.</p>
-                <select id="rule-summary-selector" class="w-full p-3 border border-slate-300 rounded-lg mb-4 bg-white text-slate-700 focus:ring-blue-500 focus:border-blue-500">
-                    <option value="">Selecione um tópico...</option>
-                </select>
-                <button id="summarize-rule-btn" class="w-full bg-blue-700 text-white px-6 py-3 rounded-full hover:bg-blue-800 transition shadow-lg shadow-blue-500/20 flex items-center justify-center">
-                    Gerar Resumo Simples
+                <button data-profile="organizer" class="profile-btn w-full md:w-auto bg-green-600 text-white px-6 py-3 rounded-full hover:bg-green-700 transition shadow-lg shadow-green-600/20">
+                    📋 Sou Organizador/Coordenador
                 </button>
-                <div id="rule-summary-result" class="mt-4 p-4 bg-blue-50/50 rounded-lg hidden">
-                    <p id="rule-summary-loading" class="text-slate-500 italic"></p>
-                    <div id="rule-summary-content" class="text-slate-700 text-left"></div>
-                </div>
+                <button data-profile="student" class="profile-btn w-full md:w-auto bg-indigo-600 text-white px-6 py-3 rounded-full hover:bg-indigo-700 transition shadow-lg shadow-indigo-600/20">
+                    🏃‍♂️ Sou Estudante Atleta
+                </button>
             </div>
         </section>
+    </div>
 
-    </main>
+    <!-- Main content area that will be populated based on profile -->
+    <div id="content-wrapper" class="hidden">
+        <div class="container mx-auto px-6 text-right my-4">
+            <button id="switch-profile-btn" class="text-sm text-blue-700 hover:underline font-semibold">← Trocar Perfil</button>
+        </div>
+        <div id="main-content">
+            <!-- Profile-specific content will be injected here -->
+        </div>
+    </div>
+
+    <!-- Organizer Login Modal -->
+    <div id="organizer-login-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button id="close-login-modal-btn" class="absolute top-4 right-4 text-slate-500 hover:text-slate-800 transition">
+                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h3 class="text-2xl font-bold text-slate-800 mb-6 text-center">Acesso Restrito</h3>
+            <form id="organizer-login-form">
+                <div class="mb-4">
+                    <label for="username" class="block text-sm font-medium text-slate-700 mb-1">Usuário</label>
+                    <input type="text" id="username" name="username" required class="w-full p-3 border border-slate-300 rounded-lg bg-white text-slate-700 focus:ring-green-500 focus:border-green-500">
+                </div>
+                <div class="mb-6">
+                    <label for="password" class="block text-sm font-medium text-slate-700 mb-1">Senha</label>
+                    <input type="password" id="password" name="password" required class="w-full p-3 border border-slate-300 rounded-lg bg-white text-slate-700 focus:ring-green-500 focus:border-green-500">
+                </div>
+                <p id="login-error" class="text-red-500 text-sm text-center mb-4"></p>
+                <button type="submit" class="w-full bg-green-600 text-white px-6 py-3 rounded-full hover:bg-green-700 transition flex items-center justify-center">
+                    <span id="login-btn-text">Entrar</span>
+                    <svg id="login-loader" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                </button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Teacher/Coach View Template -->
+    <template id="teacher-view-template">
+        <main class="container mx-auto px-6">
+            <section id="overview" class="py-20 md:py-28 text-center">
+                <h1 class="text-4xl md:text-6xl font-black mb-4"><span class="brand-gradient">Jogos Estudantis Vilelenses</span> 2025</h1>
+                <p class="text-lg text-slate-600 max-w-3xl mx-auto mb-8">O maior evento de esporte escolar de Teotônio Vilela está chegando! Prepare sua equipe para a XV Edição dos jogos.</p>
+                <div id="countdown" class="flex justify-center space-x-4 md:space-x-8 text-center my-12">
+                    <div><div id="days" class="text-4xl md:text-6xl font-bold text-blue-800 bg-white shadow-xl rounded-2xl p-4 min-w-[80px]">00</div><div class="text-sm font-semibold text-slate-500 mt-2">DIAS</div></div>
+                    <div><div id="hours" class="text-4xl md:text-6xl font-bold text-blue-800 bg-white shadow-xl rounded-2xl p-4 min-w-[80px]">00</div><div class="text-sm font-semibold text-slate-500 mt-2">HORAS</div></div>
+                    <div><div id="minutes" class="text-4xl md:text-6xl font-bold text-blue-800 bg-white shadow-xl rounded-2xl p-4 min-w-[80px]">00</div><div class="text-sm font-semibold text-slate-500 mt-2">MINUTOS</div></div>
+                    <div><div id="seconds" class="text-4xl md:text-6xl font-bold text-blue-800 bg-white shadow-xl rounded-2xl p-4 min-w-[80px]">00</div><div class="text-sm font-semibold text-slate-500 mt-2">SEGUNDOS</div></div>
+                </div>
+                <div class="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto text-left mt-16">
+                    <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100"><h3 class="font-bold text-lg text-slate-800 mb-2">🗓️ Datas do Evento</h3><p class="text-slate-600">01 a 10 de Setembro de 2025</p></div>
+                    <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100"><h3 class="font-bold text-lg text-slate-800 mb-2">🏆 Modalidades</h3><p class="text-slate-600">15 modalidades coletivas e individuais.</p></div>
+                    <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100"><h3 class="font-bold text-lg text-slate-800 mb-2">📍 Local Principal</h3><p class="text-slate-600">Ginásio Poliesportivo "O Senadinho" e outros locais a definir.</p></div>
+                </div>
+                <div class="mt-16 max-w-4xl mx-auto">
+                    <div class="bg-white p-8 rounded-2xl shadow-lg border border-slate-100 mb-8">
+                        <h3 class="text-2xl font-bold text-slate-800 mb-4">✨ Dicas de Treino e Alimentação</h3>
+                        <p class="text-slate-600 mb-4">Obtenha sugestões de treino e alimentação para melhorar capacidades específicas no seu esporte.</p>
+                        <input type="text" id="sport-input" placeholder="Ex: Futsal, Atletismo, Natação..." class="w-full p-3 border border-slate-300 rounded-lg mb-4 bg-white text-slate-700 focus:ring-blue-500 focus:border-blue-500">
+                        <button id="generate-training-nutrition-tips-btn" class="w-full bg-blue-700 text-white px-6 py-3 rounded-full hover:bg-blue-800 transition shadow-lg shadow-blue-500/20 flex items-center justify-center">Gerar Dicas Personalizadas</button>
+                        <div id="training-nutrition-tips-result" class="mt-4 p-4 bg-blue-50/50 rounded-lg hidden"><p id="training-nutrition-tips-loading" class="text-slate-500 italic"></p><div id="training-nutrition-tips-content" class="text-slate-700 text-left"></div></div>
+                    </div>
+                </div>
+            </section>
+            <section id="modalities" class="py-20">
+                <div class="text-center mb-12"><h2 class="text-3xl md:text-4xl font-bold text-slate-800">Modalidades e Categorias</h2><p class="text-lg text-slate-600 max-w-2xl mx-auto mt-4">Explore as modalidades disponíveis. Use os filtros para ver as opções para cada categoria. Clique em uma modalidade para gerar um plano de treinamento ou ver detalhes de regras/histórico.</p></div>
+                <div class="flex justify-center space-x-2 md:space-x-4 mb-8 flex-wrap gap-2" id="category-filters">
+                    <button data-category="all" class="category-btn bg-blue-700 text-white px-5 py-2 rounded-full font-semibold transition">Todas</button>
+                    <button data-category="mirim" class="category-btn bg-white text-slate-700 px-5 py-2 rounded-full font-semibold transition hover:bg-slate-100">Mirim</button>
+                    <button data-category="infantil" class="category-btn bg-white text-slate-700 px-5 py-2 rounded-full font-semibold transition hover:bg-slate-100">Infantil</button>
+                    <button data-category="juvenil" class="category-btn bg-white text-slate-700 px-5 py-2 rounded-full font-semibold transition hover:bg-slate-100">Juvenil</button>
+                </div>
+                <div id="modalities-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+            </section>
+            <section id="timeline" class="py-20">
+                <div class="text-center mb-16"><h2 class="text-3xl md:text-4xl font-bold text-slate-800">Prazos e Inscrições</h2><p class="text-lg text-slate-600 max-w-2xl mx-auto mt-4">Fique atento às datas mais importantes do JEV'S 2025. Não perca os prazos!</p></div>
+                <div class="relative max-w-4xl mx-auto">
+                    <div class="absolute left-1/2 -translate-x-1/2 h-full w-1 bg-blue-200 rounded-full"></div>
+                    <div class="relative mb-8"><div class="flex items-center justify-start md:justify-end md:mr-8"><div class="w-full md:w-1/2 md:text-right p-4"><div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-100"><p class="text-sm font-semibold text-blue-600">08 de Agosto de 2025</p><h3 class="text-xl font-bold my-1">I Congresso Técnico</h3><p class="text-slate-600">Apresentação do regulamento geral e específico das modalidades.</p></div></div></div><div class="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-8 h-8 bg-blue-700 rounded-full border-4 border-white flex items-center justify-center text-white font-bold">1</div></div>
+                    <div class="relative mb-8"><div class="flex items-center justify-start md:ml-8"><div class="w-full md:w-1/2 p-4"><div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-100"><p class="text-sm font-semibold text-green-600">29 de Julho a 07 de Agosto de 2025</p><h3 class="text-xl font-bold my-1">Período de Inscrições</h3><p class="text-slate-600">Inscrição das equipes e atletas através do site oficial do evento. Atendimento e suporte no Auditório da SEMED a partir das 8h30.</p><a href="links.html" target="_blank" class="inline-block mt-3 text-blue-700 font-semibold hover:underline">Acessar Site →</a></div></div></div><div class="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-8 h-8 bg-green-600 rounded-full border-4 border-white flex items-center justify-center text-white font-bold">2</div></div>
+                    <div class="relative"><div class="flex items-center justify-start md:justify-end md:mr-8"><div class="w-full md:w-1/2 md:text-right p-4"><div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-100"><p class="text-sm font-semibold text-purple-600">01 a 10 de Setembro de 2025</p><h3 class="text-xl font-bold my-1">Realização dos Jogos</h3><p class="text-slate-600">Abertura no dia 01/09, seguida pelas competições em todas as modalidades.</p></div></div></div><div class="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-8 h-8 bg-purple-600 rounded-full border-4 border-white flex items-center justify-center text-white font-bold">3</div></div>
+                </div>
+            </section>
+            <section id="scoring" class="py-20">
+                <div class="text-center mb-12"><h2 class="text-3xl md:text-4xl font-bold text-slate-800">Pontuação e Premiação</h2><p class="text-lg text-slate-600 max-w-2xl mx-auto mt-4">Entenda como as instituições e atletas são pontuados e premiados nos JEV'S 2025.</p></div>
+                <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                    <div class="bg-white p-8 rounded-2xl shadow-lg border border-slate-100"><h3 class="text-2xl font-bold text-slate-800 mb-4">Critérios de Pontuação da Modalidade (Art. 56)</h3><p class="text-slate-600 mb-4">A pontuação das instituições para o quadro geral é diferente para modalidades individuais/lutas e coletivas:</p><div class="mb-6"><h4 class="font-bold text-lg text-blue-700 mb-2">Modalidades Individuais e Lutas:</h4><ul class="list-disc list-inside text-slate-600"><li>Medalha de Ouro: <strong>3 pontos</strong></li><li>Medalha de Prata: <strong>2 pontos</strong></li><li>Medalha de Bronze: <strong>1 ponto</strong></li></ul><p class="text-sm text-slate-500 mt-2">A pontuação final da instituição é o somatório de todas as medalhas conquistadas.</p></div><div><h4 class="font-bold text-lg text-green-600 mb-2">Modalidades Coletivas:</h4><ul class="list-disc list-inside text-slate-600"><li>1º Lugar: <strong>10 pontos</strong></li><li>2º Lugar: <strong>7 pontos</strong></li><li>3º Lugar: <strong>5 pontos</strong></li></ul></div></div>
+                    <div class="bg-white p-8 rounded-2xl shadow-lg border border-slate-100"><h3 class="text-2xl font-bold text-slate-800 mb-4">Classificação Geral e por Categoria (Art. 55)</h3><p class="text-slate-600 mb-4">A classificação das instituições é feita pelo somatório dos pontos obtidos em todas as modalidades, gêneros e categorias.</p><h4 class="font-bold text-lg text-blue-700 mb-2">Critérios de Desempate (Art. 55, § 3º):</h4><ol class="list-decimal list-inside text-slate-600 space-y-1"><li>Maior número de primeiros lugares (Ouro);</li><li>Maior número de segundos lugares (Prata);</li><li>Maior número de terceiros lugares (Bronze);</li><li>Maior número total de atletas participantes na competição;</li><li>Persistindo o empate, a decisão será por sorteio.</li></ol><h4 class="font-bold text-lg text-slate-800 mt-6 mb-2">Premiação (Art. 57 e 59):</h4><p class="text-slate-600">Troféus para as instituições campeãs (geral e por categoria) e medalhas para os alunos-atletas e técnicos (1º, 2º e 3º lugares) em cada modalidade, gênero e categoria.</p></div>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-lg border border-slate-100 mt-8 max-w-4xl mx-auto"><h3 class="text-2xl font-bold text-slate-800 mb-4">Regra de Pontuação Mínima da Modalidade (Art. 54)</h3><p class="text-slate-600 mb-4">Para que uma modalidade (gênero e categoria) possa pontuar para a classificação geral das Instituições de Ensino, ela deverá estar presente em pelo menos <strong>50% do total de Instituições de Ensino inscritas</strong> no JEV'S 2025.</p><p class="text-slate-600 mb-4">Caso não atinja esse percentual para a classificação geral, a modalidade poderá pontuar na <strong>classificação da sua respectiva categoria</strong> (Mirim, Infantil ou Juvenil), desde que atinja o mínimo de <strong>50% do total de Instituições de Ensino que tenham equipes ou atletas inscritos naquela categoria específica.</strong></p><p class="text-slate-600">Se a modalidade não atingir nenhum dos percentuais mínimos para pontuação, as disputas ainda serão realizadas (com mínimo de 3 instituições inscritas), mas seus resultados <strong>não serão considerados</strong> para a pontuação geral nem por categoria, servindo apenas para participação e desenvolvimento esportivo.</p></div>
+            </section>
+            <section id="ranking" class="py-20">
+                <div class="text-center mb-12"><h2 class="text-3xl md:text-4xl font-bold text-slate-800">Quadro de Ranking das Escolas</h2><p class="text-lg text-slate-600 max-w-2xl mx-auto mt-4">Acompanhe a classificação geral e por categoria. O ranking será atualizado durante o evento.</p></div>
+                <div class="max-w-5xl mx-auto bg-white p-8 rounded-2xl shadow-lg border border-slate-100">
+                    <div class="border-b border-slate-200 mb-4">
+                        <nav class="-mb-px flex space-x-6" id="ranking-tabs">
+                            <button data-target="geral" class="tab-btn active whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm border-blue-700 text-blue-700">Geral</button>
+                            <button data-target="juvenil" class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300">Juvenil</button>
+                            <button data-target="infantil" class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300">Infantil</button>
+                            <button data-target="mirim" class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300">Mirim</button>
+                        </nav>
+                    </div>
+                    <div id="ranking-content">
+                        <!-- Ranking tables will be injected here -->
+                    </div>
+                </div>
+            </section>
+            <section id="rules" class="py-20">
+                <div class="text-center mb-12"><h2 class="text-3xl md:text-4xl font-bold text-slate-800">Regras Essenciais</h2><p class="text-lg text-slate-600 max-w-2xl mx-auto mt-4">Um resumo dos pontos mais importantes do regulamento para consulta rápida.</p></div>
+                <div class="max-w-4xl mx-auto space-y-4" id="accordion"></div>
+                <div class="max-w-4xl mx-auto mt-16 bg-white p-8 rounded-2xl shadow-lg border border-slate-100">
+                    <h3 class="text-2xl font-bold text-slate-800 mb-4">✨ Explicar Regra em Detalhe com IA</h3>
+                    <p class="text-slate-600 mb-4">Selecione uma regra para obter uma explicação mais aprofundada, ideal para professores e técnicos.</p>
+                    <select id="rule-elaborate-selector" class="w-full p-3 border border-slate-300 rounded-lg mb-4 bg-white text-slate-700 focus:ring-blue-500 focus:border-blue-500"><option value="">Selecione um tópico...</option></select>
+                    <button id="elaborate-rule-btn" class="w-full bg-blue-700 text-white px-6 py-3 rounded-full hover:bg-blue-800 transition shadow-lg shadow-blue-500/20 flex items-center justify-center">Gerar Explicação Detalhada</button>
+                    <div id="rule-elaborate-result" class="mt-4 p-4 bg-blue-50/50 rounded-lg hidden"><p id="rule-elaborate-loading" class="text-slate-500 italic"></p><div id="rule-elaborate-content" class="text-slate-700 text-left"></div></div>
+                </div>
+            </section>
+        </main>
+    </template>
+
+    <!-- Organizer View Template -->
+    <template id="organizer-view-template">
+        <main class="container mx-auto px-6">
+            <section class="py-20 text-center">
+                <h1 class="text-4xl md:text-5xl font-black mb-4"><span class="brand-gradient">Portal do Organizador</span></h1>
+                <p class="text-lg text-slate-600 max-w-3xl mx-auto">Ferramentas e informações para a gestão e coordenação do JEV'S 2025.</p>
+            </section>
+            <section class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-100 md:col-span-2 lg:col-span-1">
+                    <h3 class="font-bold text-xl text-slate-800 mb-3">📊 Estatísticas Gerais</h3>
+                    <div class="space-y-3 text-slate-600">
+                        <p><strong>Total de Instituições:</strong> <span class="font-mono text-blue-700">A ser definido</span></p>
+                        <p class="pl-4"><strong>Públicas:</strong> <span class="font-mono text-blue-700">A ser definido</span></p>
+                        <p class="pl-4"><strong>Privadas:</strong> <span class="font-mono text-blue-700">A ser definido</span></p>
+                        <p><strong>Total de Atletas Inscritos:</strong> <span class="font-mono text-green-700">A ser definido</span></p>
+                        <p class="pl-4"><strong>Masculino:</strong> <span class="font-mono text-green-700">A ser definido</span></p>
+                        <p class="pl-4"><strong>Feminino:</strong> <span class="font-mono text-green-700">A ser definido</span></p>
+                         <p><strong>Total de Equipes (Coletivas):</strong> <span class="font-mono text-indigo-700">A ser definido</span></p>
+                        <p><strong>Modalidade com Mais Atletas:</strong> <span class="font-mono text-purple-700">A ser definido</span></p>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-100">
+                    <h3 class="font-bold text-xl text-slate-800 mb-3">🔗 Links Rápidos</h3>
+                    <div class="space-y-2">
+                        <a href="#" class="block text-blue-700 hover:underline">Planilha de Inscrições →</a>
+                        <a href="#" class="block text-blue-700 hover:underline">Contatos de Emergência →</a>
+                        <a href="#" class="block text-blue-700 hover:underline">Regulamento Completo (PDF) →</a>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-100">
+                    <h3 class="font-bold text-xl text-slate-800 mb-3">📣 Comunicação</h3>
+                    <p class="text-slate-600">Acesso ao painel para envio de comunicados oficiais e boletins.</p>
+                    <button class="mt-3 w-full bg-green-600 text-white px-6 py-2 rounded-full hover:bg-green-700 transition">Acessar Painel</button>
+                </div>
+            </section>
+            <section id="timeline" class="py-20">
+                <div class="text-center mb-16"><h2 class="text-3xl md:text-4xl font-bold text-slate-800">Cronograma Organizacional</h2></div>
+                <div class="relative max-w-4xl mx-auto">
+                    <div class="absolute left-1/2 -translate-x-1/2 h-full w-1 bg-blue-200 rounded-full"></div>
+                    <div class="relative mb-8"><div class="flex items-center justify-start md:justify-end md:mr-8"><div class="w-full md:w-1/2 md:text-right p-4"><div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-100"><p class="text-sm font-semibold text-blue-600">08 de Agosto de 2025</p><h3 class="text-xl font-bold my-1">I Congresso Técnico</h3><p class="text-slate-600">Apresentação do regulamento geral e específico das modalidades.</p></div></div></div><div class="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-8 h-8 bg-blue-700 rounded-full border-4 border-white flex items-center justify-center text-white font-bold">1</div></div>
+                    <div class="relative mb-8"><div class="flex items-center justify-start md:ml-8"><div class="w-full md:w-1/2 p-4"><div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-100"><p class="text-sm font-semibold text-green-600">29 de Julho a 07 de Agosto de 2025</p><h3 class="text-xl font-bold my-1">Período de Inscrições</h3><p class="text-slate-600">Inscrição das equipes e atletas através do site oficial do evento. Atendimento e suporte no Auditório da SEMED a partir das 8h30.</p><a href="links.html" target="_blank" class="inline-block mt-3 text-blue-700 font-semibold hover:underline">Acessar Site →</a></div></div></div><div class="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-8 h-8 bg-green-600 rounded-full border-4 border-white flex items-center justify-center text-white font-bold">2</div></div>
+                    <div class="relative"><div class="flex items-center justify-start md:justify-end md:mr-8"><div class="w-full md:w-1/2 md:text-right p-4"><div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-100"><p class="text-sm font-semibold text-purple-600">01 a 10 de Setembro de 2025</p><h3 class="text-xl font-bold my-1">Realização dos Jogos</h3><p class="text-slate-600">Abertura no dia 01/09, seguida pelas competições em todas as modalidades.</p></div></div></div><div class="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-8 h-8 bg-purple-600 rounded-full border-4 border-white flex items-center justify-center text-white font-bold">3</div></div>
+                </div>
+            </section>
+        </main>
+    </template>
+
+    <!-- Student View Template -->
+    <template id="student-view-template">
+        <main class="container mx-auto px-6">
+            <section class="py-20 text-center">
+                <h1 class="text-4xl md:text-5xl font-black mb-4"><span class="brand-gradient">Área do Atleta</span></h1>
+                <p class="text-lg text-slate-600 max-w-3xl mx-auto">Tudo o que você precisa saber para brilhar nos JEV'S 2025!</p>
+            </section>
+            
+            <section class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white p-8 rounded-2xl shadow-lg border border-slate-100">
+                    <h3 class="font-bold text-2xl text-slate-800 mb-4">✅ Prepare-se para o Grande Dia!</h3>
+                    <ul class="space-y-3 text-slate-600">
+                        <li class="flex items-center"><span class="text-2xl mr-3">🗓️</span> Verificar com meu professor o dia e hora dos meus jogos.</li>
+                        <li class="flex items-center"><span class="text-2xl mr-3">👕</span> Deixar meu uniforme e equipamentos separados.</li>
+                        <li class="flex items-center"><span class="text-2xl mr-3">💧</span> Lembrar de levar minha garrafa de água.</li>
+                        <li class="flex items-center"><span class="text-2xl mr-3">🤝</span> Competir com garra, mas sempre com respeito.</li>
+                        <li class="flex items-center"><span class="text-2xl mr-3">🎉</span> Me divertir e fazer novas amizades!</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-lg border border-slate-100">
+                    <h3 class="text-2xl font-bold text-slate-800 mb-4">📍 Locais de Competição</h3>
+                    <p class="text-slate-600 mb-4">A cerimônia de abertura será no local principal. Os demais locais serão confirmados em breve. Fique atento aos comunicados do seu professor!</p>
+                    <div class="space-y-2">
+                        <p><strong>Principal:</strong> Ginásio Poliesportivo "O Senadinho"</p>
+                        <p><strong>Outros:</strong> A confirmar</p>
+                    </div>
+                     <div class="mt-4 h-40 bg-slate-200 rounded-lg flex items-center justify-center text-slate-500">
+                        <p>Mapa interativo em breve</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="py-20">
+                 <div class="text-center mb-12"><h2 class="text-3xl md:text-4xl font-bold text-slate-800">Dúvidas Frequentes</h2></div>
+                 <div class="max-w-4xl mx-auto space-y-4" id="student-faq-accordion"></div>
+            </section>
+
+            <section class="py-10">
+                <div class="text-center mb-12"><h2 class="text-3xl md:text-4xl font-bold text-slate-800">Valores dos Jogos</h2></div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto" id="values-cards">
+                    <div class="value-card bg-white p-6 rounded-2xl shadow-md text-center cursor-pointer transform hover:-translate-y-1 transition duration-300" data-title="Respeito" data-description="Respeitar as regras, os adversários, os árbitros e os colegas de equipe é a base de qualquer esporte. A vitória só tem valor quando conquistada de forma justa e honesta."><div class="text-5xl mb-3">🤝</div><h4 class="font-bold text-lg text-slate-800">Respeito</h4></div>
+                    <div class="value-card bg-white p-6 rounded-2xl shadow-md text-center cursor-pointer transform hover:-translate-y-1 transition duration-300" data-title="Amizade" data-description="Os jogos são uma oportunidade incrível para conhecer novas pessoas e fortalecer laços. As amizades que você faz no esporte podem durar a vida toda."><div class="text-5xl mb-3">😊</div><h4 class="font-bold text-lg text-slate-800">Amizade</h4></div>
+                    <div class="value-card bg-white p-6 rounded-2xl shadow-md text-center cursor-pointer transform hover:-translate-y-1 transition duration-300" data-title="Superação" data-description="Competir é sobre dar o seu melhor, desafiar seus limites e aprender com cada vitória e derrota. O maior prêmio é a sua evolução pessoal."><div class="text-5xl mb-3">🏆</div><h4 class="font-bold text-lg text-slate-800">Superação</h4></div>
+                    <div class="value-card bg-white p-6 rounded-2xl shadow-md text-center cursor-pointer transform hover:-translate-y-1 transition duration-300" data-title="Diversão" data-description="Lembre-se que o esporte é, acima de tudo, uma fonte de alegria. Aproveite cada momento, celebre cada ponto e divirta-se com sua equipe!"><div class="text-5xl mb-3">🎉</div><h4 class="font-bold text-lg text-slate-800">Diversão</h4></div>
+                </div>
+            </section>
+
+            <section class="py-20">
+                <div class="text-center mb-12"><h2 class="text-3xl md:text-4xl font-bold text-slate-800">Princípios do Esporte Educacional</h2></div>
+                <div class="max-w-4xl mx-auto space-y-4" id="principles-accordion"></div>
+            </section>
+
+            <section class="py-20">
+                <div class="text-center mb-12"><h2 class="text-3xl md:text-4xl font-bold text-slate-800">Resultados dos Jogos</h2></div>
+                <div class="max-w-4xl mx-auto bg-white p-8 rounded-2xl shadow-lg border border-slate-100 text-center">
+                    <p class="text-slate-600 mb-4">Os resultados das partidas e competições serão atualizados aqui durante o evento. Fique de olho e torça pela sua escola!</p>
+                    <a href="#" class="inline-block bg-indigo-600 text-white px-6 py-3 rounded-full hover:bg-indigo-700 transition">Ver Quadro de Medalhas (em breve)</a>
+                </div>
+            </section>
+
+            <section class="py-20">
+                <div class="mt-16 max-w-4xl mx-auto">
+                    <div class="bg-white p-8 rounded-2xl shadow-lg border border-slate-100 mb-8">
+                        <h3 class="text-2xl font-bold text-slate-800 mb-4">✨ Dicas de Treino e Alimentação</h3>
+                        <p class="text-slate-600 mb-4">Obtenha sugestões de treino e alimentação para melhorar capacidades específicas no seu esporte.</p>
+                        <input type="text" id="sport-input-student" placeholder="Ex: Futsal, Atletismo, Natação..." class="w-full p-3 border border-slate-300 rounded-lg mb-4 bg-white text-slate-700 focus:ring-blue-500 focus:border-blue-500">
+                        <button id="generate-training-nutrition-tips-btn-student" class="w-full bg-indigo-600 text-white px-6 py-3 rounded-full hover:bg-indigo-700 transition flex items-center justify-center">Gerar Dicas Personalizadas</button>
+                        <div id="training-nutrition-tips-result-student" class="mt-4 p-4 bg-indigo-50/50 rounded-lg hidden"><p id="training-nutrition-tips-loading-student" class="text-slate-500 italic"></p><div id="training-nutrition-tips-content-student" class="text-slate-700 text-left"></div></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </template>
+
+    <!-- Generic Info Modal -->
+    <div id="info-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 500px;">
+             <button id="close-info-modal-btn" class="absolute top-4 right-4 text-slate-500 hover:text-slate-800 transition">
+                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h3 id="info-modal-title" class="text-2xl font-bold text-slate-800 mb-4 text-center"></h3>
+            <p id="info-modal-content" class="text-slate-600 text-center"></p>
+        </div>
+    </div>
 
     <!-- Modality AI Modal -->
     <div id="modality-ai-modal" class="modal-overlay">
@@ -357,25 +398,15 @@
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
             <h3 id="modal-modality-name" class="text-2xl font-bold text-slate-800 mb-6 text-center"></h3>
-            
-            <div id="modality-static-details" class="mb-6 text-center text-slate-600">
-                <!-- Icon, categories, type, athletes will go here -->
-            </div>
-
+            <div id="modality-static-details" class="mb-6 text-center text-slate-600"></div>
             <div id="modality-description-area" class="mb-6">
                 <p id="modality-description-loading" class="text-slate-500 italic text-center"></p>
                 <div id="modality-description-content" class="text-slate-700 text-left"></div>
             </div>
-
             <div class="flex justify-center space-x-4 mb-6 flex-wrap gap-2">
-                <button id="generate-training-plan-btn" class="bg-blue-700 text-white px-5 py-2 rounded-full hover:bg-blue-800 transition shadow-lg shadow-blue-500/20 flex items-center justify-center">
-                    Elaborar Plano de Treinamento
-                </button>
-                <button id="view-rules-history-btn" class="bg-green-600 text-white px-5 py-2 rounded-full hover:bg-green-700 transition shadow-lg shadow-green-600/20 flex items-center justify-center">
-                    Ver Regras e Histórico
-                </button>
+                <button id="generate-training-plan-btn" class="bg-blue-700 text-white px-5 py-2 rounded-full hover:bg-blue-800 transition shadow-lg shadow-blue-500/20 flex items-center justify-center">Elaborar Plano de Treinamento</button>
+                <button id="view-rules-history-btn" class="bg-green-600 text-white px-5 py-2 rounded-full hover:bg-green-700 transition shadow-lg shadow-green-600/20 flex items-center justify-center">Ver Regras e Histórico</button>
             </div>
-
             <div id="modality-ai-result" class="mt-4 p-4 bg-slate-50 rounded-lg border border-slate-200">
                 <p id="modality-ai-loading" class="text-slate-500 italic text-center"></p>
                 <div id="modality-ai-content" class="text-slate-700 text-left"></div>
@@ -394,675 +425,580 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             
-            // --- DATA ---
-            const modalities = [
-                { name: 'Atletismo', icon: '🏃', type: 'Individual', athletes: '15-21 por gênero', categories: ['mirim', 'infantil', 'juvenil'] },
-                { name: 'Basquete', icon: '🏀', type: 'Coletivo', athletes: 'Até 10', categories: ['infantil', 'juvenil'] },
-                { name: 'Basquete 3x3', icon: '🏀', type: 'Coletivo', athletes: 'Até 4', categories: ['infantil', 'juvenil'] },
-                { name: 'Capoeira', icon: '🤸', type: 'Luta', athletes: 'Variável (peso/idade)', categories: ['mirim', 'infantil', 'juvenil'] },
-                { name: 'Cubo Mágico', icon: '🧊', type: 'Individual', athletes: 'Até 4', categories: ['mirim', 'infantil', 'juvenil'] },
-                { name: 'Futsal', icon: '⚽', type: 'Coletivo', athletes: 'Até 10', categories: ['mirim', 'infantil', 'juvenil'] },
-                { name: 'Futevôlei', icon: '🏐', type: 'Individual/Dupla', athletes: '2 duplas', categories: ['infantil', 'juvenil'] },
-                { name: 'Vôlei de praia', icon: '🏖️', type: 'Dupla', athletes: '2 duplas', categories: ['infantil', 'juvenil'] },
-                { name: 'Handebol', icon: '🤾', type: 'Coletivo', athletes: 'Até 12', categories: ['mirim', 'infantil', 'juvenil'] },
-                { name: 'Jiu-Jitsu', icon: '🥋', type: 'Luta', athletes: 'Variável (peso/idade)', categories: ['mirim', 'infantil', 'juvenil'] },
-                { name: 'Karatê', icon: '🥋', type: 'Luta', athletes: 'Variável (peso/idade)', categories: ['mirim', 'infantil', 'juvenil'] },
-                { name: 'Queimado', icon: '🎯', type: 'Coletivo', athletes: 'Até 12', categories: ['mirim', 'infantil', 'juvenil'] },
-                { name: 'Xadrez', icon: '♟️', type: 'Individual', athletes: 'Até 4', categories: ['mirim', 'infantil', 'juvenil'] },
-                { name: 'Judô', icon: '🥋', type: 'Luta', athletes: 'Variável (peso/idade)', categories: ['mirim', 'infantil', 'juvenil'] },
-                { name: 'Taekwondo', icon: '🥋', type: 'Luta', athletes: 'Variável (peso/idade)', categories: ['mirim', 'infantil', 'juvenil'] },
-                { name: 'Wrestling', icon: '🤼', type: 'Luta', athletes: 'Variável (peso/idade)', categories: ['infantil', 'juvenil'] },
-            ];
+            const profileSelector = document.getElementById('profile-selector');
+            const contentWrapper = document.getElementById('content-wrapper');
+            const mainContentContainer = document.getElementById('main-content');
+            const profileButtons = document.querySelectorAll('.profile-btn');
+            const switchProfileBtn = document.getElementById('switch-profile-btn');
+            const organizerLoginModal = document.getElementById('organizer-login-modal');
+            const closeLoginModalBtn = document.getElementById('close-login-modal-btn');
+            const organizerLoginForm = document.getElementById('organizer-login-form');
 
-            const rules = [
-                {
-                    title: "Composição das Equipes (Art. 17)",
-                    content: "Cada equipe pode ter até 14 participantes, sendo 12 atletas e 2 técnicos/auxiliares. A equipe de gestão (diretor/coordenador) pode ter até 2 membros inscritos, que podem ficar no banco de reservas e se responsabilizar pela equipe na ausência do técnico."
-                },
-                {
-                    title: "Condição de Participação (Art. 21-27)",
-                    content: "Podem participar alunos de 9 a 17 anos, regularmente matriculados. Cada atleta pode competir em até 3 modalidades (2 individuais e 1 coletiva). É obrigatória a presença de um responsável (técnico, auxiliar ou gestor) inscrito na súmula durante os jogos."
-                },
-                {
-                    title: "Sistema de Competição (Art. 37-45)",
-                    content: "As competições só ocorrem com no mínimo 3 instituições inscritas. O sistema de disputa (rodízio, cruzamento, etc.) varia conforme o número de equipes. Os detalhes e chaveamentos são definidos no Congresso Técnico. Equipes podem jogar mais de uma vez por dia, com intervalo mínimo de 2 horas."
-                },
-                {
-                    title: "Regra de W.O. (Art. 47)",
-                    content: "A tolerância de atraso é de 15 minutos para a primeira partida do dia. Para as demais, a tolerância é de 5 minutos. O W.O. não elimina a equipe em fases de rodízio, mas o caso é encaminhado à Comissão Disciplinar. O placar do W.O. varia por modalidade (ex: Futsal 1x0, Basquete 20x0)."
-                },
-                {
-                    title: "Uniformes (Art. 60-63)",
-                    content: "As equipes devem se apresentar devidamente uniformizadas. Em caso de uniformes com cores coincidentes, um sorteio definirá qual equipe usará os coletes fornecidos pela organização. A comissão técnica também deve estar vestida adequadamente (camisa, calça/bermuda e calçado fechado)."
-                },
-                {
-                    title: "Protestos (Art. 65-68)",
-                    content: "Protestos devem ser formalizados em formulário próprio e entregues até as 20:00h do dia do fato via link oficial, ou presencialmente até as 18:00h. O reclamante deve apresentar provas materiais. Protestos infundados serão analisados pela Comissão Disciplinar."
-                },
-                {
-                    title: "Pontuação Mínima da Modalidade (Art. 54)",
-                    content: "Para pontuar na classificação geral, a modalidade (gênero e categoria) deve ter pelo menos 50% das instituições inscritas no JEV'S. Se não atingir, pode pontuar na categoria específica se tiver 50% das instituições inscritas naquela categoria. Se não atingir nenhum, a disputa é só para participação (mínimo 3 instituições), sem pontuação."
-                }
-            ];
+            const teacherTemplate = document.getElementById('teacher-view-template');
+            const organizerTemplate = document.getElementById('organizer-view-template');
+            const studentTemplate = document.getElementById('student-view-template');
 
-            // --- MOBILE MENU ---
+            const mainNav = document.getElementById('main-nav');
+            const ctaButton = document.getElementById('cta-button');
             const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-            if (mobileMenuButton) {
-                mobileMenuButton.addEventListener('click', () => {
-                    mobileMenu.classList.toggle('hidden');
+
+            const updateHeaderVisibility = (profile) => {
+                const isTeacher = profile === 'teacher';
+                mainNav.style.display = isTeacher ? 'flex' : 'none';
+                ctaButton.style.display = isTeacher ? 'block' : 'none';
+                mobileMenuButton.style.display = isTeacher ? 'block' : 'none';
+            };
+
+            const showProfileView = (profile) => {
+                mainContentContainer.innerHTML = ''; // Clear previous content
+                let template;
+                if (profile === 'teacher') {
+                    template = teacherTemplate.content.cloneNode(true);
+                } else if (profile === 'organizer') {
+                    template = organizerTemplate.content.cloneNode(true);
+                } else if (profile === 'student') {
+                    template = studentTemplate.content.cloneNode(true);
+                }
+                
+                if (template) {
+                    mainContentContainer.appendChild(template);
+                    profileSelector.classList.add('hidden');
+                    contentWrapper.classList.remove('hidden');
+                    organizerLoginModal.classList.remove('open');
+                    updateHeaderVisibility(profile);
+                    initializePageFunctions();
+                }
+            };
+
+            profileButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const profile = button.dataset.profile;
+                    if (profile === 'organizer') {
+                        organizerLoginModal.classList.add('open');
+                    } else {
+                        showProfileView(profile);
+                    }
+                });
+            });
+
+            if (switchProfileBtn) {
+                switchProfileBtn.addEventListener('click', () => {
+                    contentWrapper.classList.add('hidden');
+                    profileSelector.classList.remove('hidden');
+                    mainContentContainer.innerHTML = '';
+                    updateHeaderVisibility('teacher'); // Reset header to default
+                });
+            }
+
+            if (closeLoginModalBtn) {
+                closeLoginModalBtn.addEventListener('click', () => {
+                    organizerLoginModal.classList.remove('open');
                 });
             }
             
-            // --- COUNTDOWN ---
-            const countdownElement = document.getElementById('countdown');
-            if(countdownElement) {
-                const eventDate = new Date('2025-09-01T10:00:00').getTime(); // Updated to 10:00 AM
+            if (organizerLoginModal) {
+                 organizerLoginModal.addEventListener('click', (e) => {
+                    if (e.target === organizerLoginModal) {
+                        organizerLoginModal.classList.remove('open');
+                    }
+                });
+            }
 
-                const updateCountdown = () => {
-                    const now = new Date().getTime();
-                    const distance = eventDate - now;
+            if (organizerLoginForm) {
+                organizerLoginForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const username = e.target.username.value;
+                    const password = e.target.password.value;
+                    const errorEl = document.getElementById('login-error');
+                    const btnText = document.getElementById('login-btn-text');
+                    const loader = document.getElementById('login-loader');
+                    
+                    errorEl.textContent = '';
+                    btnText.classList.add('hidden');
+                    loader.classList.remove('hidden');
 
-                    if (distance < 0) {
-                        document.getElementById('countdown').innerHTML = `<div class="text-2xl font-bold text-green-600 bg-white/80 p-6 rounded-2xl shadow-lg">O JEV'S 2025 já começou!</div>`;
+                    const googleSheetUrl = 'https://docs.google.com/spreadsheets/d/14MwUY_CZ1yHvXbmSIv-QumVspmRrU8BEqGs6mlYCZpc/export?format=csv';
+
+                    if (googleSheetUrl === 'COLE_O_SEU_LINK_CSV_PUBLICADO_AQUI') {
+                        errorEl.textContent = 'Erro de configuração: URL da planilha não definida.';
+                        btnText.classList.remove('hidden');
+                        loader.classList.add('hidden');
                         return;
                     }
 
-                    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                    try {
+                        const response = await fetch(googleSheetUrl);
+                        if (!response.ok) throw new Error('Não foi possível buscar os dados de login.');
+                        
+                        const data = await response.text();
+                        const users = data.trim().split(/\r?\n/).slice(1).map(row => {
+                            const [user, pass] = row.split(',');
+                            return { username: user.trim(), password: pass.trim() };
+                        });
 
-                    document.getElementById('days').innerText = String(days).padStart(2, '0');
-                    document.getElementById('hours').innerText = String(hours).padStart(2, '0');
-                    document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
-                    document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+                        const foundUser = users.find(user => user.username === username && user.password === password);
+
+                        if (foundUser) {
+                            showProfileView('organizer');
+                        } else {
+                            errorEl.textContent = 'Usuário ou senha inválidos.';
+                        }
+                    } catch (error) {
+                        console.error('Erro no login:', error);
+                        errorEl.textContent = 'Ocorreu um erro. Tente novamente.';
+                    } finally {
+                        btnText.classList.remove('hidden');
+                        loader.classList.add('hidden');
+                    }
+                });
+            }
+
+            function initializePageFunctions() {
+                 // --- DATA ---
+                const modalities = [
+                    { name: 'Atletismo', icon: '🏃', type: 'Individual', athletes: '15-21 por gênero', categories: ['mirim', 'infantil', 'juvenil'] },
+                    { name: 'Basquete', icon: '🏀', type: 'Coletivo', athletes: 'Até 10', categories: ['infantil', 'juvenil'] },
+                    { name: 'Basquete 3x3', icon: '🏀', type: 'Coletivo', athletes: 'Até 4', categories: ['infantil', 'juvenil'] },
+                    { name: 'Capoeira', icon: '🤸', type: 'Luta', athletes: 'Variável (peso/idade)', categories: ['mirim', 'infantil', 'juvenil'] },
+                    { name: 'Cubo Mágico', icon: '🧊', type: 'Individual', athletes: 'Até 4', categories: ['mirim', 'infantil', 'juvenil'] },
+                    { name: 'Futsal', icon: '⚽', type: 'Coletivo', athletes: 'Até 10', categories: ['mirim', 'infantil', 'juvenil'] },
+                    { name: 'Futevôlei', icon: '🏐', type: 'Individual/Dupla', athletes: '2 duplas', categories: ['infantil', 'juvenil'] },
+                    { name: 'Vôlei de praia', icon: '🏖️', type: 'Dupla', athletes: '2 duplas', categories: ['infantil', 'juvenil'] },
+                    { name: 'Handebol', icon: '🤾', type: 'Coletivo', athletes: 'Até 12', categories: ['mirim', 'infantil', 'juvenil'] },
+                    { name: 'Jiu-Jitsu', icon: '🥋', type: 'Luta', athletes: 'Variável (peso/idade)', categories: ['mirim', 'infantil', 'juvenil'] },
+                    { name: 'Karatê', icon: '🥋', type: 'Luta', athletes: 'Variável (peso/idade)', categories: ['mirim', 'infantil', 'juvenil'] },
+                    { name: 'Queimado', icon: '🎯', type: 'Coletivo', athletes: 'Até 12', categories: ['mirim', 'infantil', 'juvenil'] },
+                    { name: 'Xadrez', icon: '♟️', type: 'Individual', athletes: 'Até 4', categories: ['mirim', 'infantil', 'juvenil'] },
+                    { name: 'Judô', icon: '🥋', type: 'Luta', athletes: 'Variável (peso/idade)', categories: ['mirim', 'infantil', 'juvenil'] },
+                    { name: 'Taekwondo', icon: '🥋', type: 'Luta', athletes: 'Variável (peso/idade)', categories: ['mirim', 'infantil', 'juvenil'] },
+                    { name: 'Wrestling', icon: '🤼', type: 'Luta', athletes: 'Variável (peso/idade)', categories: ['infantil', 'juvenil'] },
+                ];
+
+                const rules = [
+                    { title: "Composição das Equipes (Art. 17)", content: "Cada equipe pode ter até 14 participantes, sendo 12 atletas e 2 técnicos/auxiliares. A equipe de gestão (diretor/coordenador) pode ter até 2 membros inscritos, que podem ficar no banco de reservas e se responsabilizar pela equipe na ausência do técnico." },
+                    { title: "Condição de Participação (Art. 21-27)", content: "Podem participar alunos de 9 a 17 anos, regularmente matriculados. Cada atleta pode competir em até 3 modalidades (2 individuais e 1 coletiva). É obrigatória a presença de um responsável (técnico, auxiliar ou gestor) inscrito na súmula durante os jogos." },
+                    { title: "Sistema de Competição (Art. 37-45)", content: "As competições só ocorrem com no mínimo 3 instituições inscritas. O sistema de disputa (rodízio, cruzamento, etc.) varia conforme o número de equipes. Os detalhes e chaveamentos são definidos no Congresso Técnico. Equipes podem jogar mais de uma vez por dia, com intervalo mínimo de 2 horas." },
+                    { title: "Regra de W.O. (Art. 47)", content: "A tolerância de atraso é de 15 minutos para a primeira partida do dia. Para as demais, a tolerância é de 5 minutos. O W.O. não elimina a equipe em fases de rodízio, mas o caso é encaminhado à Comissão Disciplinar. O placar do W.O. varia por modalidade (ex: Futsal 1x0, Basquete 20x0)." },
+                    { title: "Uniformes (Art. 60-63)", content: "As equipes devem se apresentar devidamente uniformizadas. Em caso de uniformes com cores coincidentes, um sorteio definirá qual equipe usará os coletes fornecidos pela organização. A comissão técnica também deve estar vestida adequadamente (camisa, calça/bermuda e calçado fechado)." },
+                    { title: "Protestos (Art. 65-68)", content: "Protestos devem ser formalizados em formulário próprio e entregues até as 20:00h do dia do fato via link oficial, ou presencialmente até as 18:00h. O reclamante deve apresentar provas materiais. Protestos infundados serão analisados pela Comissão Disciplinar." },
+                    { title: "Pontuação Mínima da Modalidade (Art. 54)", content: "Para pontuar na classificação geral, a modalidade (gênero e categoria) deve ter pelo menos 50% das instituições inscritas no JEV'S. Se não atingir, pode pontuar na categoria específica se tiver 50% das instituições inscritas naquela categoria. Se não atingir nenhum, a disputa é só para participação (mínimo 3 instituições), sem pontuação." }
+                ];
+
+                const studentFaqs = [
+                    { title: "O que eu preciso levar no dia do jogo?", content: "É essencial levar seu documento de identificação, uniforme completo, equipamentos específicos da sua modalidade (se houver), garrafa de água e um lanche leve. Converse com seu professor para confirmar se há mais alguma necessidade." },
+                    { title: "Posso participar de quantas modalidades?", content: "De acordo com o Art. 22 do regulamento, cada atleta pode se inscrever em até 3 modalidades, sendo no máximo 2 individuais (como atletismo, xadrez, lutas) e 1 coletiva (futsal, handebol, etc.)." },
+                    { title: "O que acontece se eu me atrasar para um jogo?", content: "Existe uma tolerância de 15 minutos de atraso para o primeiro jogo do dia e 5 minutos para os demais. Se sua equipe não estiver pronta após esse tempo, será considerado W.O. (derrota por ausência). Por isso, chegue sempre com antecedência!" },
+                    { title: "Onde vejo a tabela com os horários dos meus jogos?", content: "A tabela oficial com datas, horários e locais será divulgada no site do evento e enviada para os professores/técnicos responsáveis. A melhor forma de saber é sempre confirmar com seu professor." }
+                ];
+                
+                const principles = [
+                    { title: "Princípio da Inclusão", content: "Todos têm o direito de participar, não importa o nível de habilidade, gênero ou origem. O esporte educacional acolhe a todos e celebra a diversidade de cada atleta." },
+                    { title: "Princípio da Participação", content: "Mais importante que vencer é participar. O esporte na escola é para que todos possam vivenciar a alegria do jogo, aprender e se desenvolver como pessoas e cidadãos." },
+                    { title: "Princípio da Cooperação", content: "Aprender a trabalhar em equipe é uma das lições mais valiosas do esporte. A cooperação, a ajuda mútua e o trabalho em conjunto são essenciais para alcançar objetivos comuns." },
+                    { title: "Princípio da Autonomia", content: "O esporte ajuda você a tomar decisões, a ter responsabilidade por suas ações e a se tornar mais independente e confiante dentro e fora de quadra." }
+                ];
+
+                // --- MOBILE MENU ---
+                const mobileMenuButton = document.getElementById('mobile-menu-button');
+                const mobileMenu = document.getElementById('mobile-menu');
+                if (mobileMenuButton) {
+                    mobileMenuButton.addEventListener('click', () => {
+                        mobileMenu.classList.toggle('hidden');
+                    });
+                }
+                
+                // --- COUNTDOWN ---
+                const countdownElement = document.getElementById('countdown');
+                if(countdownElement) {
+                    const eventDate = new Date('2025-09-01T10:00:00').getTime();
+                    const updateCountdown = () => {
+                        const now = new Date().getTime();
+                        const distance = eventDate - now;
+                        if (distance < 0) {
+                            countdownElement.innerHTML = `<div class="text-2xl font-bold text-green-600 bg-white/80 p-6 rounded-2xl shadow-lg">O JEV'S 2025 já começou!</div>`;
+                            return;
+                        }
+                        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                        document.getElementById('days').innerText = String(days).padStart(2, '0');
+                        document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+                        document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+                        document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+                    };
+                    setInterval(updateCountdown, 1000);
+                    updateCountdown();
+                }
+
+                // --- MODALITIES FILTERING ---
+                const modalitiesGrid = document.getElementById('modalities-grid');
+                const categoryFilters = document.getElementById('category-filters');
+                const categoryButtons = categoryFilters ? categoryFilters.querySelectorAll('.category-btn') : [];
+
+                const renderModalities = (category = 'all') => {
+                    if (!modalitiesGrid) return;
+                    modalitiesGrid.innerHTML = '';
+                    const filteredModalities = category === 'all'
+                        ? modalities
+                        : modalities.filter(m => m.categories.includes(category));
+                    
+                    filteredModalities.forEach(mod => {
+                        const card = document.createElement('div');
+                        card.className = `modality-card bg-white p-6 rounded-2xl shadow-md border border-slate-100 transform hover:-translate-y-1 transition duration-300 flex flex-col items-center text-center cursor-pointer`;
+                        card.dataset.categories = mod.categories.join(' ');
+                        card.dataset.modalityName = mod.name;
+                        card.dataset.modalityIcon = mod.icon;
+                        card.dataset.modalityType = mod.type;
+                        card.dataset.modalityAthletes = mod.athletes;
+                        card.innerHTML = `
+                            <div class="text-5xl mb-4">${mod.icon}</div>
+                            <h4 class="font-bold text-lg text-slate-800 flex-grow">${mod.name}</h4>
+                            <div class="flex space-x-2 mt-4">
+                                ${mod.categories.includes('mirim') ? '<span class="bg-yellow-200 text-yellow-800 text-xs font-semibold px-2 py-1 rounded-full">Mirim</span>' : ''}
+                                ${mod.categories.includes('infantil') ? '<span class="bg-green-200 text-green-800 text-xs font-semibold px-2 py-1 rounded-full">Infantil</span>' : ''}
+                                ${mod.categories.includes('juvenil') ? '<span class="bg-blue-200 text-blue-800 text-xs font-semibold px-2 py-1 rounded-full">Juvenil</span>' : ''}
+                            </div>`;
+                        modalitiesGrid.appendChild(card);
+                    });
                 };
 
-                setInterval(updateCountdown, 1000);
-                updateCountdown();
-            }
-
-            // --- MODALITIES FILTERING ---
-            const modalitiesGrid = document.getElementById('modalities-grid');
-            const categoryFilters = document.getElementById('category-filters');
-            const categoryButtons = categoryFilters ? categoryFilters.querySelectorAll('.category-btn') : [];
-
-            const renderModalities = (category = 'all') => {
-                if (!modalitiesGrid) return; // Null check
-                modalitiesGrid.innerHTML = '';
-                const filteredModalities = category === 'all'
-                    ? modalities
-                    : modalities.filter(m => m.categories.includes(category));
-                
-                filteredModalities.forEach(mod => {
-                    const card = document.createElement('div');
-                    card.className = `modality-card bg-white p-6 rounded-2xl shadow-md border border-slate-100 transform hover:-translate-y-1 transition duration-300 flex flex-col items-center text-center cursor-pointer`;
-                    card.dataset.categories = mod.categories.join(' ');
-                    card.dataset.modalityName = mod.name; // Store modality name for AI features
-                    card.dataset.modalityIcon = mod.icon;
-                    card.dataset.modalityType = mod.type;
-                    card.dataset.modalityAthletes = mod.athletes;
-
-
-                    card.innerHTML = `
-                        <div class="text-5xl mb-4">${mod.icon}</div>
-                        <h4 class="font-bold text-lg text-slate-800 flex-grow">${mod.name}</h4>
-                        <div class="flex space-x-2 mt-4">
-                            ${mod.categories.includes('mirim') ? '<span class="bg-yellow-200 text-yellow-800 text-xs font-semibold px-2 py-1 rounded-full">Mirim</span>' : ''}
-                            ${mod.categories.includes('infantil') ? '<span class="bg-green-200 text-green-800 text-xs font-semibold px-2 py-1 rounded-full">Infantil</span>' : ''}
-                            ${mod.categories.includes('juvenil') ? '<span class="bg-blue-200 text-blue-800 text-xs font-semibold px-2 py-1 rounded-full">Juvenil</span>' : ''}
-                        </div>
-                    `;
-                    modalitiesGrid.appendChild(card);
-                });
-            };
-
-            if (categoryFilters) { // Null check
-                categoryFilters.addEventListener('click', (e) => {
-                    if (e.target.classList.contains('category-btn')) {
-                        const selectedCategory = e.target.dataset.category;
-                        
-                        categoryButtons.forEach(btn => {
-                            btn.classList.remove('bg-blue-700', 'text-white');
-                            btn.classList.add('bg-white', 'text-slate-700');
-                        });
-                        
-                        e.target.classList.add('bg-blue-700', 'text-white');
-                        e.target.classList.remove('bg-white', 'text-slate-700');
-
-                        renderModalities(selectedCategory);
-                    }
-                });
-            }
-
-            // --- ACCORDION ---
-            const accordion = document.getElementById('accordion');
-            if (accordion) { // Null check
-                rules.forEach((rule, index) => {
-                    const item = document.createElement('div');
-                    item.className = 'bg-white rounded-2xl shadow-md border border-slate-100 overflow-hidden';
-                    item.innerHTML = `
-                        <button class="accordion-toggle w-full flex justify-between items-center p-6 text-left font-semibold text-slate-800 hover:bg-slate-50 transition">
-                            <span>${rule.title}</span>
-                            <svg class="accordion-icon w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                        </button>
-                        <div class="accordion-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
-                            <div class="p-6 pt-0 text-slate-600">
-                                <p>${rule.content}</p>
-                            </div>
-                        </div>
-                    `;
-                    accordion.appendChild(item);
-                });
-                
-                accordion.addEventListener('click', (e) => {
-                    const toggle = e.target.closest('.accordion-toggle');
-                    if (toggle) {
-                        const content = toggle.nextElementSibling;
-                        const icon = toggle.querySelector('.accordion-icon');
-                        
-                        // Close all others
-                        document.querySelectorAll('.accordion-content').forEach(el => {
-                            if (el !== content) {
-                                el.style.maxHeight = null;
-                                const otherIcon = el.previousElementSibling ? el.previousElementSibling.querySelector('.accordion-icon') : null;
-                                if (otherIcon) otherIcon.classList.remove('rotate-180');
-                            }
-                        });
-
-                        // Toggle current
-                        if (content.style.maxHeight) {
-                            content.style.maxHeight = null;
-                            icon.classList.remove('rotate-180');
-                        } else {
-                            content.style.maxHeight = content.scrollHeight + "px";
-                            icon.classList.add('rotate-180');
+                if (categoryFilters) {
+                    categoryFilters.addEventListener('click', (e) => {
+                        if (e.target.classList.contains('category-btn')) {
+                            const selectedCategory = e.target.dataset.category;
+                            categoryButtons.forEach(btn => {
+                                btn.classList.remove('bg-blue-700', 'text-white');
+                                btn.classList.add('bg-white', 'text-slate-700');
+                            });
+                            e.target.classList.add('bg-blue-700', 'text-white');
+                            e.target.classList.remove('bg-white', 'text-slate-700');
+                            renderModalities(selectedCategory);
                         }
-                    }
-                });
-            }
-
-
-            // --- MODALITIES CHART ---
-            const mirimCount = modalities.filter(m => m.categories.includes('mirim')).length;
-            const infantilCount = modalities.filter(m => m.categories.includes('infantil')).length;
-            const juvenilCount = modalities.filter(m => m.categories.includes('juvenil')).length;
-
-            const ctx = document.getElementById('modalitiesChart');
-            if (ctx) { // Null check
-                new Chart(ctx.getContext('2d'), {
-                    type: 'bar',
-                    data: {
-                        labels: ['Mirim (9-11 anos)', 'Infantil (12-14 anos)', 'Juvenil (15-17 anos)'],
-                        datasets: [{
-                            label: 'Nº de Modalidades',
-                            data: [mirimCount, infantilCount, juvenilCount],
-                            backgroundColor: [
-                                'rgba(253, 224, 71, 0.6)', // yellow-300
-                                'rgba(74, 222, 128, 0.6)', // green-400
-                                'rgba(96, 165, 250, 0.6)'  // blue-400
-                            ],
-                            borderColor: [
-                                'rgba(253, 224, 71, 1)',
-                                'rgba(74, 222, 128, 1)',
-                                'rgba(96, 165, 250, 1)'
-                            ],
-                            borderWidth: 1,
-                            borderRadius: 8,
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                display: false
-                            },
-                            tooltip: {
-                                backgroundColor: '#1e293b', // slate-800
-                                titleFont: { size: 14, weight: 'bold' },
-                                bodyFont: { size: 12 },
-                                padding: 12,
-                                cornerRadius: 8,
-                                displayColors: false,
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                grid: {
-                                    color: '#e2e8f0' // slate-200
-                                },
-                                ticks: {
-                                    color: '#475569' // slate-600
-                                }
-                            },
-                            x: {
-                                grid: {
-                                    display: false
-                                },
-                                ticks: {
-                                    color: '#475569' // slate-600
-                                }
-                            }
-                        }
-                    }
-                });
-            }
-
-
-            // --- LLM INTEGRATIONS ---
-            const generateOpeningIdeasBtn = document.getElementById('generate-opening-ideas-btn');
-            const openingIdeasResult = document.getElementById('opening-ideas-result');
-            const openingIdeasLoading = document.getElementById('opening-ideas-loading');
-            const openingIdeasContent = document.getElementById('opening-ideas-content');
-
-            if (generateOpeningIdeasBtn) { // Null check
-                generateOpeningIdeasBtn.addEventListener('click', async () => {
-                    if (openingIdeasResult) openingIdeasResult.classList.remove('hidden');
-                    if (openingIdeasLoading) openingIdeasLoading.textContent = 'Gerando ideias... Por favor, aguarde.';
-                    if (openingIdeasContent) openingIdeasContent.innerHTML = '';
-
-                    const prompt = "Gere 3 ideias criativas para a cerimônia de abertura dos Jogos Estudantis Vilelenses (JEV'S 2025), considerando que é um evento escolar que celebra esporte, educação e união. Inclua sugestões para tema, atividades e um breve discurso inspirador para cada ideia. Formate a resposta com tópicos claros para cada ideia.";
-                    let chatHistory = [];
-                    chatHistory.push({ role: "user", parts: [{ text: prompt }] });
-                    const payload = { contents: chatHistory };
-                    const apiKey = "AIzaSyBHxP40DZ9X2prMB_VeQWFLNby8J2BCKCI"; 
-                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
-                    try {
-                        const response = await fetch(apiUrl, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(payload)
-                        });
-                        const result = response.ok ? await response.json() : await response.text(); // Handle non-JSON response
-                        if (response.ok && result.candidates && result.candidates.length > 0 &&
-                            result.candidates[0].content && result.candidates[0].content.parts &&
-                            result.candidates[0].content.parts.length > 0) {
-                            const text = result.candidates[0].content.parts[0].text;
-                            if (openingIdeasContent) openingIdeasContent.innerHTML = text.replace(/\n/g, '<br>');
-                            if (openingIdeasLoading) openingIdeasLoading.textContent = '';
-                        } else {
-                            if (openingIdeasLoading) openingIdeasLoading.textContent = `Não foi possível gerar ideias. Erro: ${typeof result === 'string' ? result : 'Resposta inesperada.'}`;
-                        }
-                    } catch (error) {
-                        console.error('Erro ao chamar a API Gemini para ideias de abertura:', error);
-                        if (openingIdeasLoading) openingIdeasLoading.textContent = 'Erro ao gerar ideias. Verifique sua conexão ou tente mais tarde.';
-                    }
-                });
-            }
-
-            const generateTrainingNutritionTipsBtn = document.getElementById('generate-training-nutrition-tips-btn');
-            const sportInput = document.getElementById('sport-input');
-            const trainingNutritionTipsResult = document.getElementById('training-nutrition-tips-result');
-            const trainingNutritionTipsLoading = document.getElementById('training-nutrition-tips-loading');
-            const trainingNutritionTipsContent = document.getElementById('training-nutrition-tips-content');
-
-            if (generateTrainingNutritionTipsBtn && sportInput) { // Null checks
-                generateTrainingNutritionTipsBtn.addEventListener('click', async () => {
-                    const sportName = sportInput.value.trim();
-                    if (!sportName) {
-                        if (trainingNutritionTipsResult) trainingNutritionTipsResult.classList.remove('hidden');
-                        if (trainingNutritionTipsLoading) trainingNutritionTipsLoading.textContent = '';
-                        if (trainingNutritionTipsContent) trainingNutritionTipsContent.innerHTML = '<p class="text-red-500">Por favor, digite o nome de um esporte.</p>';
-                        return;
-                    }
-
-                    if (trainingNutritionTipsResult) trainingNutritionTipsResult.classList.remove('hidden');
-                    if (trainingNutritionTipsLoading) trainingNutritionTipsLoading.textContent = `Gerando dicas de treino e alimentação para ${sportName}... Por favor, aguarde.`;
-                    if (trainingNutritionTipsContent) trainingNutritionTipsContent.innerHTML = '';
-
-                    const prompt = `Gere dicas de treino e alimentação para atletas escolares de ${sportName} que desejam melhorar capacidades específicas e otimizar seu desempenho. Inclua sugestões para treino (ex: força, velocidade, resistência, técnica) e alimentação (ex: pré-treino, pós-treino, hidratação). Formate a resposta com tópicos claros.`;
-                    let chatHistory = [];
-                    chatHistory.push({ role: "user", parts: [{ text: prompt }] });
-                    const payload = { contents: chatHistory };
-                    const apiKey = "AIzaSyBHxP40DZ9X2prMB_VeQWFLNby8J2BCKCI"; 
-                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
-                    try {
-                        const response = await fetch(apiUrl, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(payload)
-                        });
-                        const result = response.ok ? await response.json() : await response.text(); // Handle non-JSON response
-                        if (response.ok && result.candidates && result.candidates.length > 0 &&
-                            result.candidates[0].content && result.candidates[0].content.parts &&
-                            result.candidates[0].content.parts.length > 0) {
-                            const text = result.candidates[0].content.parts[0].text;
-                            if (trainingNutritionTipsContent) trainingNutritionTipsContent.innerHTML = text.replace(/\n/g, '<br>');
-                            if (trainingNutritionTipsLoading) trainingNutritionTipsLoading.textContent = '';
-                        } else {
-                            if (trainingNutritionTipsLoading) trainingNutritionTipsLoading.textContent = `Não foi possível gerar as dicas. Erro: ${typeof result === 'string' ? result : 'Resposta inesperada.'}`;
-                        }
-                    } catch (error) {
-                        console.error('Erro ao chamar a API Gemini para dicas de treino e alimentação:', error);
-                        if (trainingNutritionTipsLoading) trainingNutritionTipsLoading.textContent = 'Erro ao gerar dicas. Verifique sua conexão ou tente mais tarde.';
-                    }
-                });
-            }
-
-
-            const ruleElaborateSelector = document.getElementById('rule-elaborate-selector');
-            const elaborateRuleBtn = document.getElementById('elaborate-rule-btn');
-            const ruleElaborateResult = document.getElementById('rule-elaborate-result');
-            const ruleElaborateLoading = document.getElementById('rule-elaborate-loading');
-            const ruleElaborateContent = document.getElementById('rule-elaborate-content');
-
-            if (ruleElaborateSelector) { // Null check
-                // Populate rule elaborate selector
-                rules.forEach((rule, index) => {
-                    const option = document.createElement('option');
-                    option.value = index;
-                    option.textContent = rule.title;
-                    ruleElaborateSelector.appendChild(option);
-                });
-            }
-
-            if (elaborateRuleBtn) { // Null check
-                elaborateRuleBtn.addEventListener('click', async () => {
-                    const selectedIndex = ruleElaborateSelector ? ruleElaborateSelector.value : "";
-                    if (selectedIndex === "") {
-                        if (ruleElaborateResult) ruleElaborateResult.classList.remove('hidden');
-                        if (ruleElaborateLoading) ruleElaborateLoading.textContent = '';
-                        if (ruleElaborateContent) ruleElaborateContent.innerHTML = '<p class="text-red-500">Por favor, selecione um tópico de regra para detalhar.</p>';
-                        return;
-                    }
-
-                    const ruleContent = rules[selectedIndex].content;
-                    const ruleTitle = rules[selectedIndex].title;
-
-                    if (ruleElaborateResult) ruleElaborateResult.classList.remove('hidden');
-                    if (ruleElaborateLoading) ruleElaborateLoading.textContent = 'Gerando explicação detalhada... Por favor, aguarde.';
-                    if (ruleElaborateContent) ruleElaborateContent.innerHTML = '';
-
-                    const prompt = `Explique em detalhes a regra sobre '${ruleTitle}' do regulamento dos Jogos Estudantis Vilelenses, considerando o contexto de um professor ou técnico. A regra original é: '${ruleContent.replace(/<[^>]*>?/gm, '')}'. Dê exemplos práticos se possível. Formate a resposta de forma clara e didática.`; 
-                    
-                    let chatHistory = [];
-                    chatHistory.push({ role: "user", parts: [{ text: prompt }] });
-                    const payload = { contents: chatHistory };
-                    const apiKey = "AIzaSyBHxP40DZ9X2prMB_VeQWFLNby8J2BCKCI"; 
-                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
-                    try {
-                        const response = await fetch(apiUrl, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(payload)
-                        });
-                        const result = response.ok ? await response.json() : await response.text(); // Handle non-JSON response
-                        if (response.ok && result.candidates && result.candidates.length > 0 &&
-                            result.candidates[0].content && result.candidates[0].content.parts &&
-                            result.candidates[0].content.parts.length > 0) {
-                            const text = result.candidates[0].content.parts[0].text;
-                            if (ruleElaborateContent) ruleElaborateContent.innerHTML = text.replace(/\n/g, '<br>');
-                            if (ruleElaborateLoading) ruleElaborateLoading.textContent = '';
-                        } else {
-                            if (ruleElaborateLoading) ruleElaborateLoading.textContent = `Não foi possível gerar a explicação. Erro: ${typeof result === 'string' ? result : 'Resposta inesperada.'}`;
-                        }
-                    } catch (error) {
-                        console.error('Erro ao chamar a API Gemini para detalhamento de regra:', error);
-                        if (ruleElaborateLoading) ruleElaborateLoading.textContent = 'Erro ao gerar explicação. Verifique sua conexão ou tente mais tarde.';
-                    }
-                });
-            }
-
-            const ruleSummarySelector = document.getElementById('rule-summary-selector');
-            const summarizeRuleBtn = document.getElementById('summarize-rule-btn');
-            const ruleSummaryResult = document.getElementById('rule-summary-result');
-            const ruleSummaryLoading = document.getElementById('rule-summary-loading');
-            const ruleSummaryContent = document.getElementById('rule-summary-content');
-
-            if (ruleSummarySelector) { // Null check
-                // Populate rule summary selector
-                rules.forEach((rule, index) => {
-                    const option = document.createElement('option');
-                    option.value = index;
-                    option.textContent = rule.title;
-                    ruleSummarySelector.appendChild(option);
-                });
-            }
-
-            if (summarizeRuleBtn) { // Null check
-                summarizeRuleBtn.addEventListener('click', async () => {
-                    const selectedIndex = ruleSummarySelector ? ruleSummarySelector.value : "";
-                    if (selectedIndex === "") {
-                        if (ruleSummaryResult) ruleSummaryResult.classList.remove('hidden');
-                        if (ruleSummaryLoading) ruleSummaryLoading.textContent = '';
-                        if (ruleSummaryContent) ruleSummaryContent.innerHTML = '<p class="text-red-500">Por favor, selecione um tópico de regra para resumir.</p>';
-                        return;
-                    }
-
-                    const ruleContent = rules[selectedIndex].content;
-                    const ruleTitle = rules[selectedIndex].title;
-
-                    if (ruleSummaryResult) ruleSummaryResult.classList.remove('hidden');
-                    if (ruleSummaryLoading) ruleSummaryLoading.textContent = 'Gerando resumo... Por favor, aguarde.';
-                    if (ruleSummaryContent) ruleSummaryContent.innerHTML = '';
-
-                    const prompt = `Resuma a seguinte regra dos Jogos Estudantis Vilelenses (JEV'S 2025) de forma concisa e clara para um atleta, focando nos pontos mais importantes. O título da regra é "${ruleTitle}". O conteúdo completo é: "${ruleContent.replace(/<[^>]*>?/gm, '')}"`; // Remove HTML tags from content
-                    
-                    let chatHistory = [];
-                    chatHistory.push({ role: "user", parts: [{ text: prompt }] });
-                    const payload = { contents: chatHistory };
-                    const apiKey = "AIzaSyBHxP40DZ9X2prMB_VeQWFLNby8J2BCKCI"; 
-                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
-                    try {
-                        const response = await fetch(apiUrl, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(payload)
-                        });
-                        const result = response.ok ? await response.json() : await response.text(); // Handle non-JSON response
-                        if (response.ok && result.candidates && result.candidates.length > 0 &&
-                            result.candidates[0].content && result.candidates[0].content.parts &&
-                            result.candidates[0].content.parts.length > 0) {
-                            const text = result.candidates[0].content.parts[0].text;
-                            if (ruleSummaryContent) ruleSummaryContent.innerHTML = text.replace(/\n/g, '<br>');
-                            if (ruleSummaryLoading) ruleSummaryLoading.textContent = '';
-                        } else {
-                            if (ruleSummaryLoading) ruleSummaryLoading.textContent = `Não foi possível gerar o resumo. Erro: ${typeof result === 'string' ? result : 'Resposta inesperada.'}`;
-                        }
-                    } catch (error) {
-                        console.error('Erro ao chamar a API Gemini para resumo de regra:', error);
-                        if (ruleSummaryLoading) ruleSummaryLoading.textContent = 'Erro ao gerar o resumo. Verifique sua conexão ou tente mais tarde.';
-                    }
-                });
-            }
-
-            // --- Modality AI Modal Logic ---
-            const modalityAiModal = document.getElementById('modality-ai-modal');
-            const closeModalBtn = document.getElementById('close-modal-btn');
-            const modalModalityName = document.getElementById('modal-modality-name');
-            const generateTrainingPlanBtn = document.getElementById('generate-training-plan-btn');
-            const viewRulesHistoryBtn = document.getElementById('view-rules-history-btn');
-            const modalityAiResult = document.getElementById('modality-ai-result');
-            const modalityAiLoading = document.getElementById('modality-ai-loading');
-            const modalityAiContent = document.getElementById('modality-ai-content');
-            const modalityStaticDetails = document.getElementById('modality-static-details');
-            const modalityDescriptionArea = document.getElementById('modality-description-area');
-            const modalityDescriptionLoading = document.getElementById('modality-description-loading');
-            const modalityDescriptionContent = document.getElementById('modality-description-content');
-
-
-            let currentModalityName = ''; // To store the name of the modality clicked
-
-            // Event delegation for modality cards
-            if (modalitiesGrid) { // Null check for modalitiesGrid
-                modalitiesGrid.addEventListener('click', async (e) => {
-                    const card = e.target.closest('.modality-card');
-                    if (!card) return; // Not a modality card click
-
-                    currentModalityName = card.dataset.modalityName;
-                    const modalityIcon = card.dataset.modalityIcon;
-                    const modalityType = card.dataset.modalityType;
-                    const modalityAthletes = card.dataset.modalityAthletes;
-                    const modalityCategories = card.dataset.categories.split(' ').map(cat => {
-                        let colorClass = '';
-                        if (cat === 'mirim') colorClass = 'bg-yellow-200 text-yellow-800';
-                        else if (cat === 'infantil') colorClass = 'bg-green-200 text-green-800';
-                        else if (cat === 'juvenil') colorClass = 'bg-blue-200 text-blue-800';
-                        return `<span class="${colorClass} text-xs font-semibold px-2 py-1 rounded-full">${cat.charAt(0).toUpperCase() + cat.slice(1)}</span>`;
-                    }).join(' ');
-
-                    if (modalModalityName) modalModalityName.textContent = currentModalityName;
-                    
-                    // Populate static details
-                    if (modalityStaticDetails) {
-                        modalityStaticDetails.innerHTML = `
-                            <div class="text-6xl mb-2">${modalityIcon}</div>
-                            <p class="text-lg font-semibold mb-2">Tipo: ${modalityType}</p>
-                            <p class="text-lg font-semibold mb-2">Atletas: ${modalityAthletes || 'Não especificado'}</p>
-                            <div class="flex justify-center space-x-2">${modalityCategories}</div>
-                        `;
-                    }
-
-                    // Clear previous AI results and description
-                    if (modalityAiResult) modalityAiResult.classList.add('hidden');
-                    if (modalityAiLoading) modalityAiLoading.textContent = '';
-                    if (modalityAiContent) modalityAiContent.innerHTML = '';
-                    if (modalityDescriptionArea) modalityDescriptionArea.classList.remove('hidden'); // Ensure description area is visible
-                    if (modalityDescriptionLoading) modalityDescriptionLoading.textContent = '';
-                    if (modalityDescriptionContent) modalityDescriptionContent.innerHTML = '';
-
-                    // Generate and display description
-                    await generateModalityDescription(currentModalityName);
-
-                    if (modalityAiModal) modalityAiModal.classList.add('open');
-                });
-            }
-
-            if (closeModalBtn) { // Null check
-                closeModalBtn.addEventListener('click', () => {
-                    if (modalityAiModal) modalityAiModal.classList.remove('open');
-                });
-            }
-
-            if (modalityAiModal) { // Null check
-                modalityAiModal.addEventListener('click', (e) => {
-                    if (e.target === modalityAiModal) { // Close if clicked outside content
-                        modalityAiModal.classList.remove('open');
-                    }
-                });
-            }
-
-            // New function for generating modality description
-            async function generateModalityDescription(modalityName) {
-                if (modalityDescriptionLoading) modalityDescriptionLoading.textContent = `Gerando descrição para ${modalityName}... Por favor, aguarde.`;
-                if (modalityDescriptionContent) modalityDescriptionContent.innerHTML = '';
-
-                const prompt = `Forneça uma descrição concisa e envolvente da modalidade esportiva ${modalityName}, incluindo sua essência, objetivo principal e o que a torna interessante, para um público geral em um contexto de jogos estudantis.`;
-                let chatHistory = [];
-                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
-                const payload = { contents: chatHistory };
-                const apiKey = "AIzaSyBHxP40DZ9X2prMB_VeQWFLNby8J2BCKCI"; 
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
-                try {
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
                     });
-                    if (!response.ok) {
-                        const errorData = await response.text();
-                        throw new Error(`API Error: ${response.status} ${response.statusText} - ${errorData}`);
-                    }
-                    const result = await response.json();
-                    if (result.candidates && result.candidates.length > 0 &&
-                        result.candidates[0].content && result.candidates[0].content.parts &&
-                        result.candidates[0].content.parts.length > 0) {
-                        const text = result.candidates[0].content.parts[0].text;
-                        if (modalityDescriptionContent) modalityDescriptionContent.innerHTML = text.replace(/\n/g, '<br>');
-                        if (modalityDescriptionLoading) modalityDescriptionLoading.textContent = '';
-                    } else {
-                        if (modalityDescriptionLoading) modalityDescriptionLoading.textContent = 'Não foi possível gerar a descrição. Tente novamente.';
-                    }
-                } catch (error) {
-                    console.error('Erro ao chamar a API Gemini para descrição da modalidade:', error);
-                    if (modalityDescriptionLoading) modalityDescriptionLoading.textContent = 'Erro ao gerar descrição. Verifique sua conexão ou tente mais tarde.';
                 }
-            }
 
-
-            if (generateTrainingPlanBtn) { // Null check
-                generateTrainingPlanBtn.addEventListener('click', async () => {
-                    if (modalityAiResult) modalityAiResult.classList.remove('hidden');
-                    if (modalityAiLoading) modalityAiLoading.textContent = `Gerando plano de treinamento para ${currentModalityName}... Por favor, aguarde.`;
-                    if (modalityAiContent) modalityAiContent.innerHTML = '';
-
-                    const prompt = `Elabore um plano de treinamento básico para atletas escolares de ${currentModalityName} que participarão dos Jogos Estudantis Vilelenses. O plano deve focar em aspectos gerais de preparação física, técnica e tática, adequado para um período de 4 semanas. Inclua aquecimento, exercícios principais e alongamento.`;
-                    let chatHistory = [];
-                    chatHistory.push({ role: "user", parts: [{ text: prompt }] });
-                    const payload = { contents: chatHistory };
-                    const apiKey = "AIzaSyBHxP40DZ9X2prMB_VeQWFLNby8J2BCKCI"; 
-                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
-                    try {
-                        const response = await fetch(apiUrl, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(payload)
+                // --- ACCORDION ---
+                function createAccordion(containerId, items) {
+                    const accordion = document.getElementById(containerId);
+                    if (accordion) {
+                        accordion.innerHTML = ''; // Clear existing items
+                        items.forEach((item) => {
+                            const accordionItem = document.createElement('div');
+                            accordionItem.className = 'bg-white rounded-2xl shadow-md border border-slate-100 overflow-hidden';
+                            accordionItem.innerHTML = `
+                                <button class="accordion-toggle w-full flex justify-between items-center p-6 text-left font-semibold text-slate-800 hover:bg-slate-50 transition">
+                                    <span>${item.title}</span>
+                                    <svg class="accordion-icon w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                </button>
+                                <div class="accordion-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out"><div class="p-6 pt-0 text-slate-600"><p>${item.content}</p></div></div>`;
+                            accordion.appendChild(accordionItem);
                         });
-                        const result = response.ok ? await response.json() : await response.text(); // Handle non-JSON response
-                        if (response.ok && result.candidates && result.candidates.length > 0 &&
-                            result.candidates[0].content && result.candidates[0].content.parts &&
-                            result.candidates[0].content.parts.length > 0) {
-                            const text = result.candidates[0].content.parts[0].text;
-                            if (modalityAiContent) modalityAiContent.innerHTML = text.replace(/\n/g, '<br>');
-                            if (modalityAiLoading) modalityAiLoading.textContent = '';
-                        } else {
-                            if (modalityAiLoading) modalityAiLoading.textContent = `Não foi possível gerar o plano de treinamento. Erro: ${typeof result === 'string' ? result : 'Resposta inesperada.'}`;
-                        }
-                    } catch (error) {
-                        console.error('Erro ao chamar a API Gemini para plano de treinamento:', error);
-                        if (modalityAiLoading) modalityAiLoading.textContent = 'Erro ao gerar plano. Verifique sua conexão ou tente mais tarde.';
-                    }
-                });
-            }
-
-            if (viewRulesHistoryBtn) { // Null check
-                viewRulesHistoryBtn.addEventListener('click', async () => {
-                    if (modalityAiResult) modalityAiResult.classList.remove('hidden');
-                    if (modalityAiLoading) modalityAiLoading.textContent = `Buscando aspectos de regras e histórico para ${currentModalityName}... Por favor, aguarde.`;
-                    if (modalityAiContent) modalityAiContent.innerHTML = '';
-
-                    const prompt = `Forneça aspectos importantes das regras e um breve histórico da modalidade ${currentModalityName}, focando em informações relevantes para um contexto de jogos estudantis.`;
-                    let chatHistory = [];
-                    chatHistory.push({ role: "user", parts: [{ text: prompt }] });
-                    const payload = { contents: chatHistory };
-                    const apiKey = "AIzaSyBHxP40DZ9X2prMB_VeQWFLNby8J2BCKCI"; 
-                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
-                    try {
-                        const response = await fetch(apiUrl, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(payload)
+                        
+                        accordion.addEventListener('click', (e) => {
+                            const toggle = e.target.closest('.accordion-toggle');
+                            if (toggle) {
+                                const content = toggle.nextElementSibling;
+                                const icon = toggle.querySelector('.accordion-icon');
+                                document.querySelectorAll(`#${containerId} .accordion-content`).forEach(el => {
+                                    if (el !== content) {
+                                        el.style.maxHeight = null;
+                                        const otherIcon = el.previousElementSibling?.querySelector('.accordion-icon');
+                                        if (otherIcon) otherIcon.classList.remove('rotate-180');
+                                    }
+                                });
+                                if (content.style.maxHeight) {
+                                    content.style.maxHeight = null;
+                                    icon.classList.remove('rotate-180');
+                                } else {
+                                    content.style.maxHeight = content.scrollHeight + "px";
+                                    icon.classList.add('rotate-180');
+                                }
+                            }
                         });
-                        const result = response.ok ? await response.json() : await response.text(); // Handle non-JSON response
-                        if (response.ok && result.candidates && result.candidates.length > 0 &&
-                            result.candidates[0].content && result.candidates[0].content.parts &&
-                            result.candidates[0].content.parts.length > 0) {
-                            const text = result.candidates[0].content.parts[0].text;
-                            if (modalityAiContent) modalityAiContent.innerHTML = text.replace(/\n/g, '<br>');
-                            if (modalityAiLoading) modalityAiLoading.textContent = '';
-                        } else {
-                            if (modalityAiLoading) modalityAiLoading.textContent = `Não foi possível buscar as informações. Erro: ${typeof result === 'string' ? result : 'Resposta inesperada.'}`;
-                        }
-                    } catch (error) {
-                        console.error('Erro ao chamar a API Gemini para regras/histórico:', error);
-                        if (modalityAiLoading) modalityAiLoading.textContent = 'Erro ao buscar informações. Verifique sua conexão ou tente mais tarde.';
                     }
+                }
+                
+                createAccordion('accordion', rules);
+                createAccordion('student-faq-accordion', studentFaqs);
+                createAccordion('principles-accordion', principles);
+
+
+                // --- MODALITIES CHART ---
+                const ctx = document.getElementById('modalitiesChart');
+                if (ctx) {
+                    const mirimCount = modalities.filter(m => m.categories.includes('mirim')).length;
+                    const infantilCount = modalities.filter(m => m.categories.includes('infantil')).length;
+                    const juvenilCount = modalities.filter(m => m.categories.includes('juvenil')).length;
+                    new Chart(ctx.getContext('2d'), {
+                        type: 'bar',
+                        data: {
+                            labels: ['Mirim (9-11 anos)', 'Infantil (12-14 anos)', 'Juvenil (15-17 anos)'],
+                            datasets: [{
+                                label: 'Nº de Modalidades',
+                                data: [mirimCount, infantilCount, juvenilCount],
+                                backgroundColor: ['rgba(253, 224, 71, 0.6)', 'rgba(74, 222, 128, 0.6)', 'rgba(96, 165, 250, 0.6)'],
+                                borderColor: ['rgba(253, 224, 71, 1)', 'rgba(74, 222, 128, 1)', 'rgba(96, 165, 250, 1)'],
+                                borderWidth: 1,
+                                borderRadius: 8,
+                            }]
+                        },
+                        options: {
+                            responsive: true, maintainAspectRatio: false,
+                            plugins: { legend: { display: false }, tooltip: { backgroundColor: '#1e293b', titleFont: { size: 14, weight: 'bold' }, bodyFont: { size: 12 }, padding: 12, cornerRadius: 8, displayColors: false, } },
+                            scales: { y: { beginAtZero: true, grid: { color: '#e2e8f0' }, ticks: { color: '#475569' } }, x: { grid: { display: false }, ticks: { color: '#475569' } } }
+                        }
+                    });
+                }
+                
+                // --- RANKING TABS ---
+                const rankingTabs = document.getElementById('ranking-tabs');
+                const rankingContent = document.getElementById('ranking-content');
+                
+                const rankingData = {
+                    geral: [
+                        { pos: '🥇', school: 'Escola Modelo A', score: 125 },
+                        { pos: '🥈', school: 'Colégio Vilelense B', score: 110 },
+                        { pos: '🥉', school: 'Instituto Educacional C', score: 98 },
+                        { pos: '4', school: 'Escola Municipal D', score: 85 },
+                    ],
+                    juvenil: [
+                        { pos: '🥇', school: 'Colégio Vilelense B', score: 50 },
+                        { pos: '🥈', school: 'Escola Modelo A', score: 45 },
+                        { pos: '🥉', school: 'Escola Municipal D', score: 40 },
+                    ],
+                    infantil: [
+                        { pos: '🥇', school: 'Escola Modelo A', score: 60 },
+                        { pos: '🥈', school: 'Instituto Educacional C', score: 55 },
+                        { pos: '🥉', school: 'Colégio Vilelense B', score: 40 },
+                    ],
+                    mirim: [
+                        { pos: '🥇', school: 'Instituto Educacional C', score: 43 },
+                        { pos: '🥈', school: 'Escola Modelo A', score: 20 },
+                        { pos: '🥉', school: 'Colégio Vilelense B', score: 20 },
+                    ]
+                };
+
+                const renderRankingTable = (category) => {
+                    if (!rankingContent) return;
+                    const data = rankingData[category] || [];
+                    let tableHTML = `
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-slate-200">
+                                <thead class="bg-slate-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Posição</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Escola</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Pontuação</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-slate-200">`;
+                    
+                    data.forEach(item => {
+                        tableHTML += `
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">${item.pos}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">${item.school}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 font-bold">${item.score}</td>
+                            </tr>`;
+                    });
+
+                    tableHTML += `</tbody></table></div>`;
+                    rankingContent.innerHTML = tableHTML;
+                };
+
+                if (rankingTabs) {
+                    rankingTabs.addEventListener('click', (e) => {
+                        if (e.target.classList.contains('tab-btn')) {
+                            document.querySelectorAll('#ranking-tabs .tab-btn').forEach(btn => {
+                                btn.classList.remove('active', 'border-blue-700', 'text-blue-700');
+                                btn.classList.add('border-transparent', 'text-slate-500', 'hover:text-slate-700', 'hover:border-slate-300');
+                            });
+                            e.target.classList.add('active', 'border-blue-700', 'text-blue-700');
+                            e.target.classList.remove('border-transparent', 'text-slate-500', 'hover:text-slate-700', 'hover:border-slate-300');
+                            renderRankingTable(e.target.dataset.target);
+                        }
+                    });
+                    // Initial render
+                    renderRankingTable('geral');
+                }
+
+
+                // --- LLM INTEGRATIONS ---
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+                async function callGeminiAPI(prompt, loadingElement, contentElement, errorPrefix) {
+                    if (loadingElement) loadingElement.textContent = 'Gerando... Por favor, aguarde.';
+                    if (contentElement) contentElement.innerHTML = '';
+                    const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
+                    try {
+                        const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                        const result = await response.json();
+                        if (response.ok && result.candidates?.[0]?.content?.parts?.[0]?.text) {
+                            const text = result.candidates[0].content.parts[0].text;
+                            if (contentElement) contentElement.innerHTML = text.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\*(.*?)\*/g, '<em>$1</em>');
+                            if (loadingElement) loadingElement.textContent = '';
+                        } else { throw new Error(result.error?.message || 'Resposta inesperada da API.'); }
+                    } catch (error) {
+                        console.error(`Erro ao chamar a API Gemini para ${errorPrefix}:`, error);
+                        if (loadingElement) loadingElement.textContent = `Erro ao gerar conteúdo. Verifique a conexão ou tente mais tarde.`;
+                    }
+                }
+
+                function setupAITool(buttonId, inputId, resultContainerId, loadingId, contentId, promptGenerator) {
+                    const button = document.getElementById(buttonId);
+                    const input = document.getElementById(inputId);
+                    if (button) {
+                        button.addEventListener('click', () => {
+                            const inputValue = input ? input.value.trim() : 'general';
+                            if (input && input.tagName === 'SELECT' && !inputValue) {
+                                const content = document.getElementById(contentId);
+                                if (content) content.innerHTML = '<p class="text-red-500">Por favor, selecione uma opção.</p>';
+                                document.getElementById(resultContainerId)?.classList.remove('hidden');
+                                return;
+                            }
+                            if (input && input.tagName === 'INPUT' && !inputValue) {
+                                const content = document.getElementById(contentId);
+                                if (content) content.innerHTML = '<p class="text-red-500">Por favor, preencha o campo necessário.</p>';
+                                document.getElementById(resultContainerId)?.classList.remove('hidden');
+                                return;
+                            }
+                            const resultContainer = document.getElementById(resultContainerId);
+                            const loading = document.getElementById(loadingId);
+                            const content = document.getElementById(contentId);
+                            if (resultContainer) resultContainer.classList.remove('hidden');
+                            const prompt = promptGenerator(inputValue);
+                            callGeminiAPI(prompt, loading, content, 'AI Tool');
+                        });
+                    }
+                }
+
+                setupAITool('generate-training-nutrition-tips-btn', 'sport-input', 'training-nutrition-tips-result', 'training-nutrition-tips-loading', 'training-nutrition-tips-content', (sportName) => `Gere dicas de treino e alimentação para atletas escolares de ${sportName}. Inclua sugestões para treino (força, velocidade, etc.) e alimentação (pré/pós-treino). Formate com tópicos e negrito.`);
+                setupAITool('generate-training-nutrition-tips-btn-student', 'sport-input-student', 'training-nutrition-tips-result-student', 'training-nutrition-tips-loading-student', 'training-nutrition-tips-content-student', (sportName) => `Gere dicas de treino e alimentação para atletas escolares de ${sportName}. Inclua sugestões para treino (força, velocidade, etc.) e alimentação (pré/pós-treino). Formate com tópicos e negrito.`);
+                
+                function populateRuleSelectors() {
+                    const elaborateSelector = document.getElementById('rule-elaborate-selector');
+                    const summarySelector = document.getElementById('rule-summary-selector');
+                    if (elaborateSelector) {
+                        elaborateSelector.innerHTML = '<option value="">Selecione um tópico...</option>';
+                        rules.forEach((rule, index) => {
+                            const option = document.createElement('option');
+                            option.value = index;
+                            option.textContent = rule.title;
+                            elaborateSelector.appendChild(option);
+                        });
+                    }
+                    if (summarySelector) {
+                        summarySelector.innerHTML = '<option value="">Selecione um tópico...</option>';
+                        rules.forEach((rule, index) => {
+                            const option = document.createElement('option');
+                            option.value = index;
+                            option.textContent = rule.title;
+                            summarySelector.appendChild(option);
+                        });
+                    }
+                }
+                populateRuleSelectors();
+
+                setupAITool('elaborate-rule-btn', 'rule-elaborate-selector', 'rule-elaborate-result', 'rule-elaborate-loading', 'rule-elaborate-content', (selectedIndex) => {
+                    const rule = rules[selectedIndex];
+                    return `Explique em detalhes a regra sobre '${rule.title}' do regulamento dos JEV'S, considerando o contexto de um professor/técnico. A regra é: '${rule.content}'. Dê exemplos práticos. Formate de forma didática com negrito.`;
                 });
+                setupAITool('summarize-rule-btn', 'rule-summary-selector', 'rule-summary-result', 'rule-summary-loading', 'rule-summary-content', (selectedIndex) => {
+                    const rule = rules[selectedIndex];
+                    return `Resuma a regra '${rule.title}' dos JEV'S de forma concisa para um atleta. A regra é: '${rule.content}'.`;
+                });
+
+                // --- Modality AI Modal Logic ---
+                const modalityAiModal = document.getElementById('modality-ai-modal');
+                const closeModalBtn = document.getElementById('close-modal-btn');
+                const modalModalityName = document.getElementById('modal-modality-name');
+                const generateTrainingPlanBtn = document.getElementById('generate-training-plan-btn');
+                const viewRulesHistoryBtn = document.getElementById('view-rules-history-btn');
+                const modalityAiResult = document.getElementById('modality-ai-result');
+                const modalityAiLoading = document.getElementById('modality-ai-loading');
+                const modalityAiContent = document.getElementById('modality-ai-content');
+                const modalityStaticDetails = document.getElementById('modality-static-details');
+                const modalityDescriptionLoading = document.getElementById('modality-description-loading');
+                const modalityDescriptionContent = document.getElementById('modality-description-content');
+                let currentModalityName = '';
+
+                const modalitiesGridForModal = document.getElementById('modalities-grid');
+                if (modalitiesGridForModal) {
+                    modalitiesGridForModal.addEventListener('click', async (e) => {
+                        const card = e.target.closest('.modality-card');
+                        if (!card) return;
+                        currentModalityName = card.dataset.modalityName;
+                        if (modalModalityName) modalModalityName.textContent = currentModalityName;
+                        if (modalityStaticDetails) {
+                            const modalityIcon = card.dataset.modalityIcon;
+                            const modalityType = card.dataset.modalityType;
+                            const modalityAthletes = card.dataset.modalityAthletes;
+                            const modalityCategories = card.dataset.categories.split(' ').map(cat => `<span class="${cat === 'mirim' ? 'bg-yellow-200 text-yellow-800' : cat === 'infantil' ? 'bg-green-200 text-green-800' : 'bg-blue-200 text-blue-800'} text-xs font-semibold px-2 py-1 rounded-full">${cat.charAt(0).toUpperCase() + cat.slice(1)}</span>`).join(' ');
+                            modalityStaticDetails.innerHTML = `<div class="text-6xl mb-2">${modalityIcon}</div><p class="text-lg font-semibold mb-2">Tipo: ${modalityType}</p><p class="text-lg font-semibold mb-2">Atletas: ${modalityAthletes || 'Não especificado'}</p><div class="flex justify-center space-x-2">${modalityCategories}</div>`;
+                        }
+                        if (modalityAiResult) modalityAiResult.classList.add('hidden');
+                        if (modalityAiModal) modalityAiModal.classList.add('open');
+                        const descPrompt = `Forneça uma descrição concisa e envolvente da modalidade esportiva ${currentModalityName}, para um público de jogos estudantis.`;
+                        await callGeminiAPI(descPrompt, modalityDescriptionLoading, modalityDescriptionContent, 'descrição da modalidade');
+                    });
+                }
+
+                if (closeModalBtn) closeModalBtn.addEventListener('click', () => modalityAiModal?.classList.remove('open'));
+                if (modalityAiModal) modalityAiModal.addEventListener('click', (e) => { if (e.target === modalityAiModal) modalityAiModal.classList.remove('open'); });
+
+                if (generateTrainingPlanBtn) {
+                    generateTrainingPlanBtn.addEventListener('click', () => {
+                        if (modalityAiResult) modalityAiResult.classList.remove('hidden');
+                        const prompt = `Elabore um plano de treinamento básico para atletas escolares de ${currentModalityName} para os JEV'S. Foco em preparação física, técnica e tática para 4 semanas. Use negrito para títulos.`;
+                        callGeminiAPI(prompt, modalityAiLoading, modalityAiContent, 'plano de treino');
+                    });
+                }
+                if (viewRulesHistoryBtn) {
+                    viewRulesHistoryBtn.addEventListener('click', () => {
+                        if (modalityAiResult) modalityAiResult.classList.remove('hidden');
+                        const prompt = `Forneça aspectos importantes das regras e um breve histórico da modalidade ${currentModalityName}, para um contexto de jogos estudantis. Use negrito para títulos.`;
+                        callGeminiAPI(prompt, modalityAiLoading, modalityAiContent, 'regras e histórico');
+                    });
+                }
+
+                // --- Info Modal Logic for Student View ---
+                const infoModal = document.getElementById('info-modal');
+                const closeInfoModalBtn = document.getElementById('close-info-modal-btn');
+                const infoModalTitle = document.getElementById('info-modal-title');
+                const infoModalContent = document.getElementById('info-modal-content');
+                const valuesCardsContainer = document.getElementById('values-cards');
+
+                if (valuesCardsContainer) {
+                    valuesCardsContainer.addEventListener('click', (e) => {
+                        const card = e.target.closest('.value-card');
+                        if (card) {
+                            const title = card.dataset.title;
+                            const description = card.dataset.description;
+                            if (infoModalTitle) infoModalTitle.textContent = title;
+                            if (infoModalContent) infoModalContent.textContent = description;
+                            if (infoModal) infoModal.classList.add('open');
+                        }
+                    });
+                }
+
+                if (closeInfoModalBtn) {
+                    closeInfoModalBtn.addEventListener('click', () => {
+                        infoModal.classList.remove('open');
+                    });
+                }
+
+                if (infoModal) {
+                    infoModal.addEventListener('click', (e) => {
+                        if (e.target === infoModal) {
+                            infoModal.classList.remove('open');
+                        }
+                    });
+                }
+
+                // --- INITIAL RENDER ---
+                renderModalities();
             }
-
-
-            // --- INITIAL RENDER ---
-            renderModalities();
         });
     </script>
 </body>
