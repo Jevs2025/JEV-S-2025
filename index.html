@@ -77,6 +77,27 @@
             background-color: #1e3a8a; /* bg-blue-800 */
             color: white;
         }
+        .principle-wheel {
+            display: grid;
+            grid-template-areas: "a b" "d c";
+            gap: 1rem;
+            max-width: 500px;
+            margin: auto;
+        }
+        .principle-slice {
+            padding: 2rem 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .principle-slice:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        .principle-slice:nth-child(1) { grid-area: a; background-color: #bfdbfe; border-top-left-radius: 100%; }
+        .principle-slice:nth-child(2) { grid-area: b; background-color: #bbf7d0; border-top-right-radius: 100%; }
+        .principle-slice:nth-child(3) { grid-area: c; background-color: #fef08a; border-bottom-right-radius: 100%; }
+        .principle-slice:nth-child(4) { grid-area: d; background-color: #fecaca; border-bottom-left-radius: 100%; }
     </style>
 </head>
 <body class="text-slate-700">
@@ -597,10 +618,10 @@
                 ];
                 
                 const principles = [
-                    { title: "Princípio da Inclusão", content: "Todos têm o direito de participar, não importa o nível de habilidade, gênero ou origem. O esporte educacional acolhe a todos e celebra a diversidade de cada atleta." },
-                    { title: "Princípio da Participação", content: "Mais importante que vencer é participar. O esporte na escola é para que todos possam vivenciar a alegria do jogo, aprender e se desenvolver como pessoas e cidadãos." },
-                    { title: "Princípio da Cooperação", content: "Aprender a trabalhar em equipe é uma das lições mais valiosas do esporte. A cooperação, a ajuda mútua e o trabalho em conjunto são essenciais para alcançar objetivos comuns." },
-                    { title: "Princípio da Autonomia", content: "O esporte ajuda você a tomar decisões, a ter responsabilidade por suas ações e a se tornar mais independente e confiante dentro e fora de quadra." }
+                    { title: "Princípio da Inclusão", content: "Nos JEV's, todos têm o direito de participar, não importa o nível de habilidade, gênero ou origem. O esporte educacional é um espaço que acolhe a todos e celebra a diversidade de cada atleta, garantindo que ninguém fique de fora da festa." },
+                    { title: "Princípio da Participação", content: "Mais importante do que a vitória é a jornada. O esporte na escola é uma ferramenta para que todos possam vivenciar a alegria do jogo, aprender com os desafios e se desenvolver como pessoas e cidadãos. Cada momento em quadra é uma vitória." },
+                    { title: "Princípio da Cooperação", content: "Aprender a jogar junto, a confiar no colega e a trabalhar em equipe é uma das lições mais valiosas do esporte. A cooperação, a ajuda mútua e o esforço coletivo são essenciais para alcançar objetivos comuns e formam a base de uma comunidade mais unida." },
+                    { title: "Princípio da Autonomia", content: "O esporte ensina a tomar decisões rápidas, a ter responsabilidade por suas ações e a liderar pelo exemplo. Participar dos jogos ajuda você a se tornar mais independente, confiante e preparado para os desafios dentro e fora de quadra." }
                 ];
 
                 // --- MOBILE MENU ---
@@ -828,7 +849,7 @@
 
 
                 // --- LLM INTEGRATIONS ---
-                const apiKey = "";
+                const apiKey = "AIzaSyBHxP40DZ9X2prMB_VeQWFLNby8J2BCKCI";
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
                 async function callGeminiAPI(prompt, loadingElement, contentElement, errorPrefix) {
                     if (loadingElement) loadingElement.textContent = 'Gerando... Por favor, aguarde.';
