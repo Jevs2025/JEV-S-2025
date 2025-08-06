@@ -17,6 +17,7 @@
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f8fafc; /* slate-50 */
+            overflow-x: hidden; /* Previne rolagem horizontal */
         }
         .brand-gradient {
             background: linear-gradient(90deg, #1e3a8a, #4f46e5);
@@ -61,8 +62,8 @@
             padding: 30px;
             border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            width: 100%;
-            max-width: 400px;
+            width: 90%; /* Responsivo para telas pequenas */
+            max-width: 400px; /* Limite para telas maiores */
             max-height: 90%;
             overflow-y: auto;
             position: relative;
@@ -89,16 +90,20 @@
                 </div>
                 <span class="text-xl font-bold text-slate-800">JEV'S 2025</span>
             </a>
-            <div id="main-nav" class="hidden md:flex items-center space-x-8">
-                <a href="#overview" class="hover:text-blue-700 transition">Visão Geral</a>
-                <a href="#modalities" class="hover:text-blue-700 transition">Modalidades</a>
-                <a href="#timeline" class="hover:text-blue-700 transition">Prazos</a>
-                <a href="#scoring" class="hover:text-blue-700 transition">Pontuação</a>
-                <a href="#rules" class="hover:text-blue-700 transition">Regras</a>
+            <!-- Desktop Menu Wrapper -->
+            <div id="desktop-menu-wrapper" class="hidden md:flex items-center space-x-8">
+                <div id="main-nav" class="flex items-center space-x-8">
+                    <a href="#overview" class="hover:text-blue-700 transition">Visão Geral</a>
+                    <a href="#modalities" class="hover:text-blue-700 transition">Modalidades</a>
+                    <a href="#timeline" class="hover:text-blue-700 transition">Prazos</a>
+                    <a href="#scoring" class="hover:text-blue-700 transition">Pontuação</a>
+                    <a href="#rules" class="hover:text-blue-700 transition">Regras</a>
+                </div>
+                <a id="cta-button" href="links.html" class="bg-blue-700 text-white px-5 py-2 rounded-full hover:bg-blue-800 transition shadow-lg shadow-blue-500/20">
+                    Inscreva-se
+                </a>
             </div>
-            <a id="cta-button" href="links.html" class="hidden md:block bg-blue-700 text-white px-5 py-2 rounded-full hover:bg-blue-800 transition shadow-lg shadow-blue-500/20">
-                Inscreva-se
-            </a>
+            <!-- Mobile Menu Button -->
             <button id="mobile-menu-button" class="md:hidden text-slate-800">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
@@ -755,56 +760,55 @@
                 const rankingTabs = document.getElementById('ranking-tabs');
                 const rankingContent = document.getElementById('ranking-content');
                 
-                const rankingData = {
-                    geral: [
-                        { pos: '🥇', school: 'Escola Modelo A', score: 125 },
-                        { pos: '🥈', school: 'Colégio Vilelense B', score: 110 },
-                        { pos: '🥉', school: 'Instituto Educacional C', score: 98 },
-                        { pos: '4', school: 'Escola Municipal D', score: 85 },
-                    ],
-                    juvenil: [
-                        { pos: '🥇', school: 'Colégio Vilelense B', score: 50 },
-                        { pos: '🥈', school: 'Escola Modelo A', score: 45 },
-                        { pos: '🥉', school: 'Escola Municipal D', score: 40 },
-                    ],
-                    infantil: [
-                        { pos: '🥇', school: 'Escola Modelo A', score: 60 },
-                        { pos: '🥈', school: 'Instituto Educacional C', score: 55 },
-                        { pos: '🥉', school: 'Colégio Vilelense B', score: 40 },
-                    ],
-                    mirim: [
-                        { pos: '🥇', school: 'Instituto Educacional C', score: 43 },
-                        { pos: '🥈', school: 'Escola Modelo A', score: 20 },
-                        { pos: '🥉', school: 'Colégio Vilelense B', score: 20 },
-                    ]
+                const rankingUrls = {
+                    geral: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSnxqp5IlXumIec_AavCXNr3IEh-CcjpbE-xof3BooXZGNafHwqYXHlZYRbXf128rCsEef4nWApKwK4/pub?gid=0&single=true&output=csv',
+                    juvenil: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSnxqp5IlXumIec_AavCXNr3IEh-CcjpbE-xof3BooXZGNafHwqYXHlZYRbXf128rCsEef4nWApKwK4/pub?gid=623963326&single=true&output=csv',
+                    infantil: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSnxqp5IlXumIec_AavCXNr3IEh-CcjpbE-xof3BooXZGNafHwqYXHlZYRbXf128rCsEef4nWApKwK4/pub?gid=1173262793&single=true&output=csv',
+                    mirim: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSnxqp5IlXumIec_AavCXNr3IEh-CcjpbE-xof3BooXZGNafHwqYXHlZYRbXf128rCsEef4nWApKwK4/pub?gid=308596143&single=true&output=csv'
                 };
 
-                const renderRankingTable = (category) => {
+                const renderRankingTable = async (category) => {
                     if (!rankingContent) return;
-                    const data = rankingData[category] || [];
-                    let tableHTML = `
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-slate-200">
-                                <thead class="bg-slate-50">
-                                    <tr>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Posição</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Escola</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Pontuação</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white divide-y divide-slate-200">`;
-                    
-                    data.forEach(item => {
-                        tableHTML += `
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">${item.pos}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">${item.school}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 font-bold">${item.score}</td>
-                            </tr>`;
-                    });
+                    rankingContent.innerHTML = `<p class="text-slate-500 text-center">Carregando ranking...</p>`;
+                    try {
+                        const url = rankingUrls[category];
+                        const response = await fetch(url);
+                        if (!response.ok) throw new Error('Falha ao carregar os dados.');
+                        
+                        const csvText = await response.text();
+                        const rows = csvText.trim().split(/\r?\n/).slice(1);
+                        const data = rows.map(row => {
+                            const [pos, school, score] = row.split(',');
+                            return { pos, school, score };
+                        });
 
-                    tableHTML += `</tbody></table></div>`;
-                    rankingContent.innerHTML = tableHTML;
+                        let tableHTML = `
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-slate-200">
+                                    <thead class="bg-slate-50">
+                                        <tr>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Posição</th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Escola</th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Pontuação</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-slate-200">`;
+                        
+                        data.forEach(item => {
+                            tableHTML += `
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">${item.pos}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">${item.school}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 font-bold">${item.score}</td>
+                                </tr>`;
+                        });
+
+                        tableHTML += `</tbody></table></div>`;
+                        rankingContent.innerHTML = tableHTML;
+                    } catch (error) {
+                        console.error('Erro ao carregar ranking:', error);
+                        rankingContent.innerHTML = `<p class="text-red-500 text-center">Não foi possível carregar o ranking. Tente novamente mais tarde.</p>`;
+                    }
                 };
 
                 if (rankingTabs) {
@@ -819,13 +823,12 @@
                             renderRankingTable(e.target.dataset.target);
                         }
                     });
-                    // Initial render
                     renderRankingTable('geral');
                 }
 
 
                 // --- LLM INTEGRATIONS ---
-                const apiKey = "AIzaSyBHxP40DZ9X2prMB_VeQWFLNby8J2BCKCI";
+                const apiKey = "";
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
                 async function callGeminiAPI(prompt, loadingElement, contentElement, errorPrefix) {
                     if (loadingElement) loadingElement.textContent = 'Gerando... Por favor, aguarde.';
@@ -1003,4 +1006,3 @@
     </script>
 </body>
 </html>
-
