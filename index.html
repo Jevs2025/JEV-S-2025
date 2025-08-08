@@ -240,14 +240,18 @@
                     <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100"><h3 class="font-bold text-lg text-slate-800 mb-2">🏆 Modalidades</h3><p class="text-slate-600">15 modalidades coletivas e individuais.</p></div>
                     <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100"><h3 class="font-bold text-lg text-slate-800 mb-2">📍 Local Principal</h3><p class="text-slate-600">Ginásio Poliesportivo "O Senadinho" e outros locais a definir.</p></div>
                 </div>
-                <div class="mt-16 max-w-4xl mx-auto">
-                    <div class="bg-white p-8 rounded-2xl shadow-lg border border-slate-100 mb-8">
-                        <h3 class="text-2xl font-bold text-slate-800 mb-4">✨ Dicas de Treino e Alimentação</h3>
-                        <p class="text-slate-600 mb-4">Obtenha sugestões de treino e alimentação para melhorar capacidades específicas no seu esporte.</p>
-                        <input type="text" id="sport-input" placeholder="Ex: Futsal, Atletismo, Natação..." class="w-full p-3 border border-slate-300 rounded-lg mb-4 bg-white text-slate-700 focus:ring-blue-500 focus:border-blue-500">
-                        <button id="generate-training-nutrition-tips-btn" class="w-full bg-blue-700 text-white px-6 py-3 rounded-full hover:bg-blue-800 transition shadow-lg shadow-blue-500/20 flex items-center justify-center">Gerar Dicas Personalizadas</button>
-                        <div id="training-nutrition-tips-result" class="mt-4 p-4 bg-blue-50/50 rounded-lg hidden"><p id="training-nutrition-tips-loading" class="text-slate-500 italic"></p><div id="training-nutrition-tips-content" class="text-slate-700 text-left"></div></div>
-                    </div>
+            </section>
+            <section class="py-10">
+                <div class="max-w-4xl mx-auto">
+                    <a href="regulamentos.html" class="block bg-white p-8 rounded-2xl shadow-lg border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-transform duration-300">
+                        <div class="flex items-center">
+                            <div class="text-5xl mr-6">⚖️</div>
+                            <div>
+                                <h3 class="text-2xl font-bold text-slate-800 text-left">Página de Regulamentos</h3>
+                                <p class="text-slate-600 text-left">Acesse a página com os links para todos os regulamentos específicos das modalidades.</p>
+                            </div>
+                        </div>
+                    </a>
                 </div>
             </section>
             <section id="modalities" class="py-20">
@@ -334,7 +338,6 @@
                         <a href="#" class="block text-blue-700 hover:underline">Planilha de Inscrições →</a>
                         <a href="#" class="block text-blue-700 hover:underline">Contatos de Emergência →</a>
                         <a href="#" class="block text-blue-700 hover:underline">Regulamento Completo (PDF) →</a>
-                        <a href="regulamentos.html" class="block text-blue-700 hover:underline">Ver Todos os Regulamentos →</a>
                     </div>
                 </div>
                 <div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-100">
@@ -884,7 +887,7 @@
 
 
                 // --- LLM INTEGRATIONS ---
-                const apiKey = "AIzaSyBHxP40DZ9X2prMB_VeQWFLNby8J2BCKCI";
+                const apiKey = "";
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
                 async function callGeminiAPI(prompt, loadingElement, contentElement, errorPrefix) {
                     if (loadingElement) loadingElement.textContent = 'Gerando... Por favor, aguarde.';
@@ -996,7 +999,7 @@
                             const modalityAthletes = card.dataset.modalityAthletes;
                             const modalityCategories = card.dataset.categories.split(' ').map(cat => `<span class="${cat === 'mirim' ? 'bg-yellow-200 text-yellow-800' : cat === 'infantil' ? 'bg-green-200 text-green-800' : 'bg-blue-200 text-blue-800'} text-xs font-semibold px-2 py-1 rounded-full">${cat.charAt(0).toUpperCase() + cat.slice(1)}</span>`).join(' ');
                             
-                            const iconHTML = isImageIcon
+                            const iconHTML = isImageIcon 
                                 ? `<div class="card-icon"><img src="${modalityIcon}" alt="${currentModalityName}" class="max-h-full w-auto"></div>`
                                 : `<div class="card-icon text-6xl">${modalityIcon}</div>`;
 
@@ -1080,5 +1083,3 @@
     </script>
 </body>
 </html>
-
-
