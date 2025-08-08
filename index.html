@@ -98,6 +98,17 @@
         .principle-slice:nth-child(2) { grid-area: b; background-color: #bbf7d0; border-top-right-radius: 100%; }
         .principle-slice:nth-child(3) { grid-area: c; background-color: #fef08a; border-bottom-right-radius: 100%; }
         .principle-slice:nth-child(4) { grid-area: d; background-color: #fecaca; border-bottom-left-radius: 100%; }
+        .card-icon {
+            margin-bottom: 0.75rem; /* 12px */
+            height: 56px; /* Garante altura consistente */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card-icon img {
+            max-height: 56px;
+            width: auto;
+        }
     </style>
 </head>
 <body class="text-slate-700">
@@ -602,7 +613,7 @@
                     { name: 'Basquete', icon: '🏀', type: 'Coletivo', athletes: 'Até 10', categories: ['infantil', 'juvenil'] },
                     { name: 'Basquete 3x3', icon: '🏀', type: 'Coletivo', athletes: 'Até 4', categories: ['infantil', 'juvenil'] },
                     { name: 'Capoeira', icon: '🤸', type: 'Luta', athletes: 'Variável (peso/idade)', categories: ['mirim', 'infantil', 'juvenil'] },
-                    { name: 'Cubo Mágico', icon: '🧩', type: 'Individual', athletes: 'Até 4', categories: ['mirim', 'infantil', 'juvenil'] },
+                    { name: 'Cubo Mágico', icon: 'https://cinoto.com.br/cubomagico/wp-content/uploads/2020/02/fellow.jpg', isImage: true, type: 'Individual', athletes: 'Até 4', categories: ['mirim', 'infantil', 'juvenil'] },
                     { name: 'Futsal', icon: '⚽', type: 'Coletivo', athletes: 'Até 10', categories: ['mirim', 'infantil', 'juvenil'] },
                     { name: 'Futevôlei', icon: '🏐', type: 'Individual/Dupla', athletes: '2 duplas', categories: ['infantil', 'juvenil'] },
                     { name: 'Vôlei de praia', icon: '🏖️', type: 'Dupla', athletes: '2 duplas', categories: ['infantil', 'juvenil'] },
@@ -694,10 +705,16 @@
                         card.dataset.categories = mod.categories.join(' ');
                         card.dataset.modalityName = mod.name;
                         card.dataset.modalityIcon = mod.icon;
+                        card.dataset.isImage = !!mod.isImage;
                         card.dataset.modalityType = mod.type;
                         card.dataset.modalityAthletes = mod.athletes;
+                        
+                        const iconHTML = mod.isImage 
+                            ? `<div class="card-icon"><img src="${mod.icon}" alt="${mod.name}" class="max-h-full w-auto"></div>`
+                            : `<div class="card-icon text-5xl">${mod.icon}</div>`;
+
                         card.innerHTML = `
-                            <div class="text-5xl mb-4">${mod.icon}</div>
+                            ${iconHTML}
                             <h4 class="font-bold text-lg text-slate-800 flex-grow">${mod.name}</h4>
                             <div class="flex space-x-2 mt-4">
                                 ${mod.categories.includes('mirim') ? '<span class="bg-yellow-200 text-yellow-800 text-xs font-semibold px-2 py-1 rounded-full">Mirim</span>' : ''}
@@ -866,7 +883,7 @@
 
 
                 // --- LLM INTEGRATIONS ---
-                const apiKey = "AIzaSyBHxP40DZ9X2prMB_VeQWFLNby8J2BCKCI";
+                const apiKey = "";
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
                 async function callGeminiAPI(prompt, loadingElement, contentElement, errorPrefix) {
                     if (loadingElement) loadingElement.textContent = 'Gerando... Por favor, aguarde.';
@@ -973,10 +990,16 @@
                         if (modalModalityName) modalModalityName.textContent = currentModalityName;
                         if (modalityStaticDetails) {
                             const modalityIcon = card.dataset.modalityIcon;
+                            const isImageIcon = card.dataset.isImage === 'true';
                             const modalityType = card.dataset.modalityType;
                             const modalityAthletes = card.dataset.modalityAthletes;
                             const modalityCategories = card.dataset.categories.split(' ').map(cat => `<span class="${cat === 'mirim' ? 'bg-yellow-200 text-yellow-800' : cat === 'infantil' ? 'bg-green-200 text-green-800' : 'bg-blue-200 text-blue-800'} text-xs font-semibold px-2 py-1 rounded-full">${cat.charAt(0).toUpperCase() + cat.slice(1)}</span>`).join(' ');
-                            modalityStaticDetails.innerHTML = `<div class="text-6xl mb-2">${modalityIcon}</div><p class="text-lg font-semibold mb-2">Tipo: ${modalityType}</p><p class="text-lg font-semibold mb-2">Atletas: ${modalityAthletes || 'Não especificado'}</p><div class="flex justify-center space-x-2">${modalityCategories}</div>`;
+                            
+                            const iconHTML = isImageIcon
+                                ? `<div class="card-icon"><img src="${modalityIcon}" alt="${currentModalityName}" class="max-h-full w-auto"></div>`
+                                : `<div class="card-icon text-6xl">${modalityIcon}</div>`;
+
+                            modalityStaticDetails.innerHTML = `${iconHTML}<p class="text-lg font-semibold mb-2">Tipo: ${modalityType}</p><p class="text-lg font-semibold mb-2">Atletas: ${modalityAthletes || 'Não especificado'}</p><div class="flex justify-center space-x-2">${modalityCategories}</div>`;
                         }
                         if (modalityAiResult) modalityAiResult.classList.add('hidden');
                         if (modalityAiModal) modalityAiModal.classList.add('open');
@@ -1056,4 +1079,3 @@
     </script>
 </body>
 </html>
-
