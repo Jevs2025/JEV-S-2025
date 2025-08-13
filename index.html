@@ -216,12 +216,12 @@
     <template id="teacher-view-template">
         <main class="container mx-auto px-6">
             <section class="my-8">
-                <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-4 rounded-lg shadow-lg" role="alert">
+                <div class="bg-slate-100 border-l-4 border-slate-500 text-slate-800 p-4 rounded-lg shadow-lg" role="alert">
                     <div class="flex">
-                        <div class="py-1"><svg class="fill-current h-6 w-6 text-yellow-500 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1-11a1 1 0 012 0v4a1 1 0 01-2 0v-4zm0 6a1 1 0 112 0 1 1 0 01-2 0z"/></svg></div>
+                        <div class="py-1"><svg class="fill-current h-6 w-6 text-slate-500 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/></svg></div>
                         <div>
-                            <p class="font-bold">Atenção: Inscrições Prorrogadas!</p>
-                            <p class="text-sm">O novo prazo para as inscrições é <strong>12 de Agosto</strong>.</p>
+                            <p class="font-bold">Inscrições Encerradas</p>
+                            <p class="text-sm">O período de inscrições para o JEV'S 2025 foi finalizado. Aguarde o Congresso Técnico.</p>
                         </div>
                     </div>
                 </div>
@@ -887,7 +887,7 @@
 
 
                 // --- LLM INTEGRATIONS ---
-                const apiKey = "AIzaSyBHxP40DZ9X2prMB_VeQWFLNby8J2BCKCI";
+                const apiKey = "";
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
                 async function callGeminiAPI(prompt, loadingElement, contentElement, errorPrefix) {
                     if (loadingElement) loadingElement.textContent = 'Gerando... Por favor, aguarde.';
@@ -1083,4 +1083,3 @@
     </script>
 </body>
 </html>
-
